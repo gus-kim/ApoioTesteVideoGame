@@ -1,0 +1,18 @@
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+.menu li a.btn {
+    background-color: #17a2b8;
+    color: #fff;
+}
+.menu li a.btn:hover {
+    background-color: #117a8b;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+}

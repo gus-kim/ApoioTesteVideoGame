@@ -1,0 +1,12 @@
+h1 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    text-align: center;
+}
+.menu a.btn {
+    background-color: #007bff;
+    color: #fff;
+}
+.menu a.btn:hover {
+    background-color: #0056b3;
+}

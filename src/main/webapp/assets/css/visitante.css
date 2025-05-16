@@ -1,0 +1,15 @@
+h1 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+p {
+    margin: 16px 0;
+    line-height: 1.5;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
