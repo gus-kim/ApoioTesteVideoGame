@@ -1,0 +1,38 @@
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+}
+.form-group input {
+    background: #fafafa;
+    border: 1px solid #bbb;
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+}
+.btn-primary {
+    background-color: #28a745;
+    color: #fff;
+}
+.btn-primary:hover {
+    background-color: #218838;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+.alert {
+    margin-bottom: 20px;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
