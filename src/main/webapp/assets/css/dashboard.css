@@ -1,0 +1,34 @@
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    margin-bottom: 12px;
+}
+
+/* botão ativo */
+ul.menu li a.botao-verde {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    padding: 10px 16px !important;
+    text-decoration: none !important;
+    border-radius: 5px !important;
+    display: inline-block !important;
+}
+
+/* botão desabilitado */
+ul.menu li span.botao-vermelho {
+    background-color: #f44336 !important;
+    color: white !important;
+    padding: 10px 16px !important;
+    border-radius: 5px !important;
+    display: inline-block !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
