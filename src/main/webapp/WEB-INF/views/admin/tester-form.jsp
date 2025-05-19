@@ -1,53 +1,78 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title><c:choose><c:when test="${tester != null}">Editar Testador</c:when><c:otherwise>Criar Novo Testador</c:otherwise></c:choose></title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: inline-block; width: 100px; }
-        input[type="text"], input[type="email"], input[type="password"] { padding: 5px; width: 300px; }
-        .button { padding: 5px 10px; text-decoration: none; color: white; border-radius: 3px; border: none; cursor: pointer; }
-        .button.save { background-color: #4CAF50; }
-        .button.cancel { background-color: #f44336; }
-        .error { color: red; margin-top: 10px; }
-    </style>
+    <title>
+        <c:choose>
+            <c:when test="${tester.id == null}">Novo Testador</c:when>
+            <c:otherwise>Editar Testador</c:otherwise>
+        </c:choose>
+    </title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/base.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css" />
 </head>
 <body>
-<h1><c:choose><c:when test="${tester != null}">Editar Testador</c:when><c:otherwise>Criar Novo Testador</c:otherwise></c:choose></h1>
 
-<c:if test="${error != null}">
-    <div class="error">${error}</div>
-</c:if>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-<form action="${pageContext.request.contextPath}/admin/testers/<c:choose><c:when test="${tester != null}">update</c:when><c:otherwise>create</c:otherwise></c:choose>" method="post">
-    <c:if test="${tester != null}">
-        <input type="hidden" name="id" value="${tester.id}" />
+<div class="container">
+    <h1>
+        <c:choose>
+            <c:when test="${tester.id == null}">Novo Testador</c:when>
+            <c:otherwise>Editar Testador</c:otherwise>
+        </c:choose>
+    </h1>
+
+    <c:if test="${not empty mensagens}">
+        <div class="alert">
+            <c:forEach items="${mensagens.erros}" var="erro">
+                ${erro}<br/>
+            </c:forEach>
+        </div>
     </c:if>
 
-    <div class="form-group">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" value="${tester.nome}" required />
-    </div>
+    <a href="${pageContext.request.contextPath}/admin/testers" class="btn btn-secondary">Voltar</a>
 
-    <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="${tester.email}" required />
-    </div>
+    <form id="adminForm"
+          action="${pageContext.request.contextPath}/admin/testers/${tester.id == null ? 'inserir' : 'atualizar'}"
+          method="post" novalidate>
 
-    <div class="form-group">
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" <c:if test="${tester == null}">required</c:if> />
-        <c:if test="${tester != null}"><small>(Deixe em branco para manter a senha atual)</small></c:if>
-    </div>
+        <c:if test="${tester.id != null}">
+            <input type="hidden" name="id" value="${tester.id}" />
+        </c:if>
 
-    <div class="form-group">
-        <button type="submit" class="button save">Salvar</button>
-        <a href="${pageContext.request.contextPath}/admin/testers" class="button cancel">Cancelar</a>
-    </div>
-</form>
+        <div class="form-group">
+            <label>Nome:</label>
+            <input id="nome" type="text" name="nome" value="${tester.nome}" required >
+            <div id="nomeError" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label>E-mail:</label>
+            <input id="email" type="email" name="email" value="${tester.email}" required
+                   placeholder="usuario@dominio.com">
+            <div id="emailError" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Senha:</label>
+            <input id="senha" type="password" name="senha" minlength="6" required
+                   placeholder="mínimo 6 caracteres">
+            <div id="senhaError" class="error-message"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <c:choose>
+                <c:when test="${tester.id == null}">Criar</c:when>
+                <c:otherwise>Atualizar</c:otherwise>
+            </c:choose>
+        </button>
+    </form>
+</div>
+
+<script src="${pageContext.request.contextPath}/assets/js/validation.js"></script>
+
 </body>
 </html>

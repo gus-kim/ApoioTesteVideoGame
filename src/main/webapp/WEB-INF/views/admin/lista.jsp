@@ -30,7 +30,9 @@
                 <td>${admin.email}</td>
                 <td>
                     <a href="${pageContext.request.contextPath}/admin/administradores/editar?id=${admin.id}" class="btn btn-primary">Editar</a>
-                    <a href="${pageContext.request.contextPath}/admin/administradores/remover?id=${admin.id}" class="btn btn-danger">Remover</a>
+                    <a href="${pageContext.request.contextPath}/admin/administradores/remover?id=${admin.id}" class="btn btn-danger"
+                        onclick="return confirm('Tem certeza que deseja remover este administrador?');">Remover</a>
+
                 </td>
             </tr>
         </c:forEach>

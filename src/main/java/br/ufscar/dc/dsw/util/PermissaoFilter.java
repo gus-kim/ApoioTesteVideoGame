@@ -23,10 +23,11 @@ public class PermissaoFilter implements Filter {
     public void init(FilterConfig filterConfig) {
         // Define quais papéis têm acesso a cada rota restrita
         restricoes.put("/admin/administradores", new String[]{"ADMIN"});
-        restricoes.put("/admin/projetos",      new String[]{"ADMIN"});
-        restricoes.put("/admin/estrategias",   new String[]{"ADMIN"});
-        restricoes.put("/testador/sessoes",    new String[]{"ADMIN","TESTADOR"});
-        restricoes.put("/testador/criarSessao",new String[]{"ADMIN","TESTADOR"});
+        restricoes.put("/admin/testers",         new String[]{"ADMIN"});
+        restricoes.put("/admin/projetos",        new String[]{"ADMIN"});
+        restricoes.put("/admin/estrategias",     new String[]{"ADMIN"});
+        restricoes.put("/testador/sessoes",      new String[]{"ADMIN","TESTADOR"});
+        restricoes.put("/testador/criarSessao",  new String[]{"ADMIN","TESTADOR"});
     }
 
     @Override

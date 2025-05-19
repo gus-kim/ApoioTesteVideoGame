@@ -18,16 +18,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function validateField(cfg) {
         const input = document.getElementById(cfg.field);
         const errEl = document.getElementById(cfg.field + 'Error');
-        const label = input.previousElementSibling.textContent.replace(':','');
+        if (!input || !errEl) return true;
+
+        const label = input.previousElementSibling?.textContent.replace(':','') || cfg.field;
         let v = input.value.trim();
         let msg = '';
 
-        // Validações de campo com base na configuração
-        if (cfg.required && !v) {
+        // Considera o atributo required do HTML além do config JS
+        const isRequired = cfg.required || input.hasAttribute('required');
+
+        if (isRequired && !v) {
             msg = `${label} não informado!`;
-        } else if (cfg.type === 'email' && !emailRe.test(v)) {
+        } else if (cfg.type === 'email' && v && !emailRe.test(v)) {
             msg = 'Formato de e-mail inválido!';
-        } else if (cfg.minLen && v.length < cfg.minLen) {
+        } else if (cfg.minLen && v.length > 0 && v.length < cfg.minLen) {
             msg = `Mínimo ${cfg.minLen} caracteres!`;
         }
 
