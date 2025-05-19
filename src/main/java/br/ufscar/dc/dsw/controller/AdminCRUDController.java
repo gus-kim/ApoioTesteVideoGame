@@ -134,7 +134,7 @@ public class AdminCRUDController extends HttpServlet {
             try {
                 Usuario admin = new Usuario(nome, email, senha, "ADMIN");
                 admin.setId(id);
-                dao.atualizarAdmin(admin);
+                dao.atualizarUsuario(admin);
                 response.sendRedirect(request.getContextPath() + "/admin/administradores");
                 return;
             } catch (SQLException e) {
@@ -151,7 +151,7 @@ public class AdminCRUDController extends HttpServlet {
     private void removerAdmin(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
-        dao.excluirAdmin(id);
+        dao.excluirUsuario(id);
         response.sendRedirect(request.getContextPath() + "/admin/administradores");
     }
 
