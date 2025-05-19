@@ -11,7 +11,7 @@ import java.sql.SQLException;
 /**
  * Controla rotas básicas: /index, /login, /logout e /dashboard
  */
-public class IndexController extends HttpServlet {
+public class    IndexController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

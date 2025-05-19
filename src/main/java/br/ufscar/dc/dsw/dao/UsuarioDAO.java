@@ -20,6 +20,8 @@ public class UsuarioDAO {
         );
     }
 
+    //ADMIN -----------------------------------------------
+
     public void criarAdmin(Usuario admin) throws SQLException {
         if (existeEmail(admin.getEmail())) {
             throw new SQLException("E-mail já cadastrado!");
@@ -55,8 +57,47 @@ public class UsuarioDAO {
         return admins;
     }
 
-    public void atualizarAdmin(Usuario admin) throws SQLException {
-        if (existeEmail(admin.getEmail(), admin.getId())) {
+    //TESTADOR ------------------------------------
+
+    public void criarTester(Usuario tester) throws SQLException {
+        if (existeEmail(tester.getEmail())) {
+            throw new SQLException("E-mail já cadastrado!");
+        }
+
+        String sql = "INSERT INTO Usuario (nome, email, senha, papel) VALUES (?, ?, ?, 'TESTADOR')";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, tester.getNome());
+            stmt.setString(2, tester.getEmail());
+            stmt.setString(3, tester.getSenha());
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<Usuario> listarTesters() throws SQLException {
+        List<Usuario> testers = new ArrayList<>();
+        String sql = "SELECT id, nome, email FROM Usuario WHERE papel = 'TESTADOR'";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Usuario u = new Usuario();
+                u.setId(rs.getLong("id"));
+                u.setNome(rs.getString("nome"));
+                u.setEmail(rs.getString("email"));
+                testers.add(u);
+            }
+        }
+        return testers;
+    }
+
+    //ALL USERS ---------------------------------
+
+    public void atualizarUsuario(Usuario user) throws SQLException {
+        if (existeEmail(user.getEmail(), user.getId())) {
             throw new SQLException("E-mail já cadastrado!");
         }
 
@@ -64,15 +105,15 @@ public class UsuarioDAO {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, admin.getNome());
-            stmt.setString(2, admin.getEmail());
-            stmt.setString(3, admin.getSenha());
-            stmt.setLong(4, admin.getId());
+            stmt.setString(1, user.getNome());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getSenha());
+            stmt.setLong(4, user.getId());
             stmt.executeUpdate();
         }
     }
 
-    public void excluirAdmin(Long id) throws SQLException {
+    public void excluirUsuario(Long id) throws SQLException {
         String sql = "DELETE FROM Usuario WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
