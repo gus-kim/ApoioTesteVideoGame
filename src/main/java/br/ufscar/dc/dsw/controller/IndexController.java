@@ -5,50 +5,45 @@ import br.ufscar.dc.dsw.model.Usuario;
 import br.ufscar.dc.dsw.util.Erro;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "IndexController", urlPatterns = { "/index", "/login", "/logout", "/dashboard" })
-// Controlador responsável por rotas principais: login, logout, dashboard e página inicial
+/**
+ * Controla rotas básicas: /index, /login, /logout e /dashboard
+ */
 public class IndexController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String action = request.getServletPath();
+        String action = req.getServletPath();
+
         switch (action) {
             case "/logout":
-                // Invalida a sessão e redireciona para a página inicial
-                request.getSession().invalidate();
-                response.sendRedirect(request.getContextPath() + "/index");
-                return;
-            case "/visitante":
-                request.getRequestDispatcher("/visitante.jsp").forward(request, response);
+                req.getSession().invalidate(); // Encerra sessão do usuário
+                resp.sendRedirect(req.getContextPath() + "/index");
                 return;
             case "/index":
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                req.getRequestDispatcher("/index.jsp").forward(req, resp);
                 return;
             case "/login":
-                // Apenas exibe o formulário de login
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                req.getRequestDispatcher("/login.jsp").forward(req, resp);
                 return;
             case "/dashboard":
-                request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
+                req.getRequestDispatcher("/dashboard.jsp").forward(req, resp);
                 return;
             default:
-                response.sendRedirect(request.getContextPath() + "/index");
+                resp.sendRedirect(req.getContextPath() + "/index");
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // Apenas a rota /login realiza POST (processa o formulário de login)
-        if ("/login".equals(request.getServletPath())) {
+        if ("/login".equals(req.getServletPath())) {
             Erro erros = new Erro();
-            String email = request.getParameter("email");
-            String senha = request.getParameter("senha");
+            String email = req.getParameter("email");
+            String senha = req.getParameter("senha");
 
             if (email == null || email.isBlank()) erros.add("E-mail não informado!");
             if (senha == null || senha.isBlank()) erros.add("Senha não informada!");
@@ -56,27 +51,22 @@ public class IndexController extends HttpServlet {
             if (!erros.isExisteErros()) {
                 try {
                     UsuarioDAO dao = new UsuarioDAO();
-                    Usuario usuario = dao.buscarPorEmail(email);
-                    // Verifica se as credenciais estão corretas
-                    if (usuario != null && usuario.getSenha().equals(senha)) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("usuarioLogado", usuario);
-                        response.sendRedirect(request.getContextPath() + "/dashboard");
+                    Usuario u = dao.buscarPorEmail(email);
+                    if (u != null && u.getSenha().equals(senha)) {
+                        req.getSession().setAttribute("usuarioLogado", u); // Salva usuário na sessão
+                        resp.sendRedirect(req.getContextPath() + "/dashboard");
                         return;
                     } else {
                         erros.add("Credenciais inválidas!");
                     }
                 } catch (SQLException e) {
-                    erros.add("Erro de conexão com o banco de dados.");
+                    erros.add("Erro ao conectar ao banco.");
                 }
             }
-
-            // Se houver erros, reexibe o formulário com mensagens
-            request.setAttribute("mensagens", erros);
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            req.setAttribute("mensagens", erros);
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
         } else {
-            // Qualquer outro POST redireciona para a página inicial
-            response.sendRedirect(request.getContextPath() + "/index");
+            resp.sendRedirect(req.getContextPath() + "/index");
         }
     }
 }

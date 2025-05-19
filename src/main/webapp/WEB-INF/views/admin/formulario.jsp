@@ -1,16 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>
+        <%-- Define título dinâmico conforme criação ou edição --%>
         <c:choose>
             <c:when test="${admin.id == null}">Novo Administrador</c:when>
             <c:otherwise>Editar Administrador</c:otherwise>
         </c:choose>
     </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/base.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
 </head>
 <body>
@@ -19,13 +20,14 @@
 
 <div class="container">
     <h1>
+        <%-- Título principal dinâmico --%>
         <c:choose>
             <c:when test="${admin.id == null}">Novo Administrador</c:when>
             <c:otherwise>Editar Administrador</c:otherwise>
         </c:choose>
     </h1>
 
-    <!-- Exibe mensagens de erro de validação -->
+    <%-- Exibe mensagens de erro de validação, se houver --%>
     <c:if test="${not empty mensagens}">
         <div class="alert">
             <c:forEach items="${mensagens.erros}" var="erro">
@@ -40,7 +42,7 @@
           action="${pageContext.request.contextPath}/admin/administradores/${admin.id == null ? 'inserir' : 'atualizar'}"
           method="post" novalidate>
 
-        <!-- Campo oculto para o ID (só na edição) -->
+        <%-- Campo oculto para o ID (apenas na edição) --%>
         <c:if test="${admin.id != null}">
             <input type="hidden" name="id" value="${admin.id}" />
         </c:if>
@@ -66,6 +68,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">
+            <%-- Texto do botão conforme ação --%>
             <c:choose>
                 <c:when test="${admin.id == null}">Criar</c:when>
                 <c:otherwise>Atualizar</c:otherwise>
@@ -74,7 +77,6 @@
     </form>
 </div>
 
-<!-- Validação de campos via JavaScript -->
 <script src="${pageContext.request.contextPath}/assets/js/validation.js"></script>
 
 </body>

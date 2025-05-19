@@ -12,9 +12,8 @@
 
 <div class="container">
     <h1>Bem-vindo!</h1>
-
-    <!-- Menu de acesso inicial com opções para login ou navegação como visitante -->
     <div class="menu">
+        <%-- Links para login e acesso visitante --%>
         <a href="${pageContext.request.contextPath}/login" class="btn">Login</a>
         <a href="${pageContext.request.contextPath}/visitante" class="btn">Visitante</a>
     </div>

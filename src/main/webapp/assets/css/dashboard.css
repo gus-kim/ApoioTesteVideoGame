@@ -2,17 +2,33 @@ h1 {
     font-size: 1.8rem;
     margin-bottom: 20px;
 }
-.menu li a.btn {
-    background-color: #17a2b8;
-    color: #fff;
+
+.menu {
+    list-style: none;
+    padding: 0;
 }
-.menu li a.btn:hover {
-    background-color: #117a8b;
+
+.menu li {
+    margin-bottom: 12px;
 }
-.btn-secondary {
-    background-color: #6c757d;
-    color: #fff;
+
+/* botão ativo */
+ul.menu li a.botao-verde {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    padding: 10px 16px !important;
+    text-decoration: none !important;
+    border-radius: 5px !important;
+    display: inline-block !important;
 }
-.btn-secondary:hover {
-    background-color: #5a6268;
+
+/* botão desabilitado */
+ul.menu li span.botao-vermelho {
+    background-color: #f44336 !important;
+    color: white !important;
+    padding: 10px 16px !important;
+    border-radius: 5px !important;
+    display: inline-block !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
 }

@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Administradores</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/base.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
 </head>
 <body>
@@ -23,7 +23,7 @@
         <tr><th>Nome</th><th>E-mail</th><th>Ações</th></tr>
         </thead>
         <tbody>
-        <!-- Itera sobre a lista de administradores e exibe os dados -->
+        <%-- Itera e exibe os administradores --%>
         <c:forEach items="${admins}" var="admin">
             <tr>
                 <td>${admin.nome}</td>

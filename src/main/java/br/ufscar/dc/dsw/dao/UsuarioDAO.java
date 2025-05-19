@@ -9,7 +9,7 @@ public class UsuarioDAO {
 
     private Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Carrega o driver do MySQL
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Carrega driver MySQL
         } catch (ClassNotFoundException e) {
             throw new SQLException("Driver não encontrado", e);
         }
@@ -124,7 +124,7 @@ public class UsuarioDAO {
         return null;
     }
 
-    // Verifica se já existe um usuário com o e-mail informado (usado na criação)
+    // Verifica se já existe usuário com o e-mail informado (para criação)
     private boolean existeEmail(String email) throws SQLException {
         String sql = "SELECT COUNT(*) FROM Usuario WHERE email = ?";
         try (Connection conn = getConnection();
@@ -137,7 +137,7 @@ public class UsuarioDAO {
         }
     }
 
-    // Verifica se já existe outro usuário com o mesmo e-mail (usado na edição)
+    // Verifica se já existe outro usuário com mesmo e-mail (para edição)
     private boolean existeEmail(String email, Long id) throws SQLException {
         String sql = "SELECT COUNT(*) FROM Usuario WHERE email = ? AND id <> ?";
         try (Connection conn = getConnection();

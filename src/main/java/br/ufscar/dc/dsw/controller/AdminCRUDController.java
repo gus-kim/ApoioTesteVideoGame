@@ -11,21 +11,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "AdminController", urlPatterns = { "/admin/administradores/*" })
-// Controlador responsável pelo CRUD de usuários com papel ADMIN
 public class AdminCRUDController extends HttpServlet {
 
     private UsuarioDAO dao;
 
     @Override
     public void init() {
-        dao = new UsuarioDAO(); // Instancia o DAO na inicialização do servlet
+        dao = new UsuarioDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        verificarPermissoes(request, response);
-
         String action = request.getPathInfo();
         if (action == null) action = "";
 
@@ -51,8 +48,6 @@ public class AdminCRUDController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        verificarPermissoes(request, response);
-
         String action = request.getPathInfo();
         if (action == null) action = "";
 
@@ -74,21 +69,21 @@ public class AdminCRUDController extends HttpServlet {
 
     private void listarAdmins(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
+        // Carrega lista de administradores para exibir na página
         List<Usuario> admins = dao.listarAdmins();
         request.setAttribute("admins", admins);
-        request.getRequestDispatcher("/WEB-INF/views/admin/lista.jsp")
-                .forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/admin/lista.jsp").forward(request, response);
     }
 
     private void exibirFormulario(HttpServletRequest request, HttpServletResponse response, Usuario admin)
             throws ServletException, IOException {
         request.setAttribute("admin", admin);
-        request.getRequestDispatcher("/WEB-INF/views/admin/formulario.jsp")
-                .forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/admin/formulario.jsp").forward(request, response);
     }
 
     private void carregarAdmin(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
+        // Busca admin pelo id para preencher formulário de edição
         Long id = Long.parseLong(request.getParameter("id"));
         Usuario admin = dao.buscarPorId(id);
         exibirFormulario(request, response, admin);
@@ -96,90 +91,44 @@ public class AdminCRUDController extends HttpServlet {
 
     private void inserirAdmin(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        Erro erros = new Erro();
-        String nome  = request.getParameter("nome");
-        String email = request.getParameter("email");
-        String senha = request.getParameter("senha");
-
-        if (nome == null || nome.isBlank()) {
-            erros.add("Nome não informado!");
-        }
-        if (email == null || email.isBlank()) {
-            erros.add("E-mail não informado!");
-        } else if (!email.contains("@") || !email.contains(".")) {
-            erros.add("E-mail inválido!");
-        }
-        if (senha == null || senha.isBlank()) {
-            erros.add("Senha não informada!");
-        }
+        Erro erros = validarFormulario(request);
 
         if (!erros.isExisteErros()) {
-            try {
-                Usuario admin = new Usuario();
-                admin.setNome(nome);
-                admin.setEmail(email);
-                admin.setSenha(senha);
-                admin.setPapel("ADMIN");
-                dao.criarAdmin(admin);
-                response.sendRedirect(request.getContextPath() + "/admin/administradores");
-                return;
-            } catch (SQLException e) {
-                erros.add(e.getMessage()); // Aqui captura o erro "E-mail já cadastrado!"
-            }
+            Usuario admin = new Usuario(request.getParameter("nome"), request.getParameter("email"),
+                    request.getParameter("senha"), "ADMIN");
+            dao.criarAdmin(admin);
+            response.sendRedirect(request.getContextPath() + "/admin/administradores");
+            return;
         }
 
-        // Se houver erros, reenviar dados preenchidos e mensagens para o formulário
+        // Em caso de erro, mostra mensagens e mantém dados preenchidos no formulário
         request.setAttribute("mensagens", erros);
-        Usuario admin = new Usuario();
-        admin.setNome(nome);
-        admin.setEmail(email);
+        Usuario admin = new Usuario(request.getParameter("nome"), request.getParameter("email"),
+                request.getParameter("senha"), "ADMIN");
         exibirFormulario(request, response, admin);
     }
 
     private void atualizarAdmin(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        Erro erros = new Erro();
-        Long   id    = Long.parseLong(request.getParameter("id"));
-        String nome  = request.getParameter("nome");
-        String email = request.getParameter("email");
-        String senha = request.getParameter("senha");
-
-        if (nome == null || nome.isBlank()) {
-            erros.add("Nome não informado!");
-        }
-        if (email == null || email.isBlank()) {
-            erros.add("E-mail não informado!");
-        } else if (!email.contains("@") || !email.contains(".")) {
-            erros.add("E-mail inválido!");
-        }
-        if (senha == null || senha.isBlank()) {
-            erros.add("Senha não informada!");
-        }
+        Erro erros = validarFormulario(request);
+        Long id = Long.parseLong(request.getParameter("id"));
 
         if (!erros.isExisteErros()) {
-            try {
-                Usuario admin = new Usuario();
-                admin.setId(id);
-                admin.setNome(nome);
-                admin.setEmail(email);
-                admin.setSenha(senha);
-                admin.setPapel("ADMIN");
-                dao.atualizarAdmin(admin);
-                response.sendRedirect(request.getContextPath() + "/admin/administradores");
-                return;
-            } catch (SQLException e) {
-                erros.add(e.getMessage()); // Captura o erro de e-mail duplicado
-            }
+            Usuario admin = new Usuario(request.getParameter("nome"), request.getParameter("email"),
+                    request.getParameter("senha"), "ADMIN");
+            admin.setId(id);
+            dao.atualizarAdmin(admin);
+            response.sendRedirect(request.getContextPath() + "/admin/administradores");
+            return;
         }
 
+        // Em caso de erro, mantém dados e mensagens para correção no formulário
         request.setAttribute("mensagens", erros);
-        Usuario admin = new Usuario();
+        Usuario admin = new Usuario(request.getParameter("nome"), request.getParameter("email"),
+                request.getParameter("senha"), "ADMIN");
         admin.setId(id);
-        admin.setNome(nome);
-        admin.setEmail(email);
         exibirFormulario(request, response, admin);
     }
-
 
     private void removerAdmin(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
@@ -188,18 +137,18 @@ public class AdminCRUDController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/administradores");
     }
 
-    private void verificarPermissoes(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+    private Erro validarFormulario(HttpServletRequest request) {
+        Erro erros = new Erro();
+        String nome = request.getParameter("nome");
+        String email = request.getParameter("email");
+        String senha = request.getParameter("senha");
 
-        // Verifica se o usuário da sessão está autenticado e tem papel ADMIN
-        if (usuario == null || !"ADMIN".equals(usuario.getPapel())) {
-            response.sendRedirect(request.getContextPath() + "/login");
-        }
+        // Validação básica dos campos
+        if (nome == null || nome.isBlank()) erros.add("Nome não informado!");
+        if (email == null || email.isBlank()) erros.add("E-mail não informado!");
+        else if (!email.contains("@") || !email.contains(".")) erros.add("E-mail inválido!");
+        if (senha == null || senha.isBlank()) erros.add("Senha não informada!");
+
+        return erros;
     }
 }

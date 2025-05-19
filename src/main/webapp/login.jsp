@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,7 @@
 <div class="container">
     <h1>Login</h1>
 
-    <!-- Exibe mensagens de erro vindas do backend (ex: campos vazios ou credenciais inválidas) -->
+    <%-- Mensagens de erro vindas do backend --%>
     <c:if test="${not empty mensagens}">
         <div class="alert">
             <c:forEach items="${mensagens.erros}" var="erro">
@@ -49,7 +50,6 @@
     </form>
 </div>
 
-<!-- Validação de campos no lado cliente -->
 <script src="${pageContext.request.contextPath}/assets/js/validation.js"></script>
 
 </body>
