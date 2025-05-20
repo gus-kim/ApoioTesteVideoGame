@@ -1,0 +1,123 @@
+.container {
+    max-width: 1600px;
+    margin: 40px auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+    font-weight: bold;
+}
+
+.modo-admin-btn {
+    margin-bottom: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 1rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+textarea {
+    min-height: 80px;
+}
+
+.btn {
+    padding: 10px 20px;
+    /*background-color: #007bff;*/
+    border: none;
+    border-radius: 5px;
+    /*color: white;*/
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-top: 12px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/*.btn:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+
+.btn-secondary {
+    background-color: #6c757d;
+    margin-right: 10px;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.table th {
+    background-color: #f1f1f1;
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.imagem-estrategia {
+    max-width: 120px;
+    max-height: 80px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    padding: 2px;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+pre {
+    white-space: pre-wrap;
+    margin: 0;
+    font-family: inherit;
+}
+

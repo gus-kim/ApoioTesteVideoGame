@@ -78,13 +78,13 @@ VALUES ('Admin Principal', 'admin@teste.com', 'admin123', 'ADMIN'),
        ('Carlos Testador', 'carlos@teste.com', 'senha123', 'TESTADOR'),
        ('Ana Game', 'ana@teste.com', 'senha456', 'TESTADOR');
 
-INSERT INTO Estrategia (nome, descricao, exemplos, dicas)
+INSERT INTO Estrategia (nome, descricao, exemplos, dicas, imagem_url)
 VALUES ('Exploração Cega', 'O testador joga livremente sem direções específicas.', 'Jogar sem seguir missões.',
-        'Observe o ambiente ao redor.'),
+        'Observe o ambiente ao redor.', 'https://i.pinimg.com/736x/b6/53/78/b653788688009519e3adf51b97c7f26a.jpg'),
        ('Mapeamento de Interface', 'Testa interações com menus e HUD.', 'Abrir menus repetidamente.',
-        'Teste diferentes resoluções de tela.'),
+        'Teste diferentes resoluções de tela.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMeI2MMGbqUQj48qInce3YzvyKr4cIjHoVMA&s'),
        ('Testes de Limite', 'Verifica comportamentos em extremos do jogo.', 'Pular da borda do mapa.',
-        'Tente romper limites de movimento.');
+        'Tente romper limites de movimento.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThLySpWdov9nee08vMIFXuSkYy3mwwu3JmuQ&s');
 
 INSERT INTO Projeto (nome, descricao)
 VALUES ('Projeto: Jogo de Corrida', 'Testes no game de corrida urbana.'),

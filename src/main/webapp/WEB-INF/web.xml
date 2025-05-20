@@ -7,7 +7,6 @@
 
   <display-name>ApoioTesteVideoGame</display-name>
 
-  <!-- Página inicial da aplicação -->
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
@@ -22,7 +21,7 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- Servlets de navegação principal -->
+  <!-- Servlets principais -->
   <servlet>
     <servlet-name>IndexController</servlet-name>
     <servlet-class>br.ufscar.dc.dsw.controller.IndexController</servlet-class>
@@ -35,7 +34,16 @@
     <url-pattern>/dashboard</url-pattern>
   </servlet-mapping>
 
-  <!-- Servlet que intercepta /visitante e redireciona -->
+  <servlet>
+    <servlet-name>EstrategiaController</servlet-name>
+    <servlet-class>br.ufscar.dc.dsw.controller.EstrategiaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EstrategiaController</servlet-name>
+    <url-pattern>/estrategias</url-pattern>
+    <url-pattern>/admin/estrategias/*</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <servlet-name>VisitanteController</servlet-name>
     <servlet-class>br.ufscar.dc.dsw.controller.VisitanteController</servlet-class>
