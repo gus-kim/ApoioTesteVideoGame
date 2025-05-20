@@ -1,26 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<%
-    String uriOriginal = (String) request.getAttribute("uriOriginal");
-    String contextPath = request.getContextPath();
-    String pathInterno = (uriOriginal != null)
-            ? uriOriginal.substring(contextPath.length())
-            : "";
-
-    String permissaoNecessaria;
-    if (pathInterno.contains("admin")) {
-        permissaoNecessaria = "ADMIN";
-    } else if (pathInterno.contains("testador")) {
-        permissaoNecessaria = "ADMIN ou TESTADOR";
-    } else {
-        permissaoNecessaria = "Não identificada";
-    }
-
-    request.setAttribute("pathInterno", pathInterno);
-    request.setAttribute("permissaoNecessaria", permissaoNecessaria);
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +17,6 @@
     <h1>Acesso Negado</h1>
 
     <c:choose>
-        <%-- Se usuário logado, mostra nome e papel --%>
         <c:when test="${not empty sessionScope.usuarioLogado}">
             <p>
                 Você está logado como:
@@ -45,7 +24,6 @@
                 (${sessionScope.usuarioLogado.papel})
             </p>
         </c:when>
-        <%-- Se visitante --%>
         <c:otherwise>
             <p>
                 Você está navegando como:
@@ -55,9 +33,10 @@
     </c:choose>
 
     <p>Você não tem permissão para acessar este recurso.</p>
+
     <p>
         <strong>Permissão necessária:</strong>
-        ${permissaoNecessaria}
+        <c:out value="${permissaoNecessaria}" default="Não identificada" />
     </p>
 
     <div style="margin-top: 20px;">
