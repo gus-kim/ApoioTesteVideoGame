@@ -15,11 +15,24 @@ public class Session {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
+
     public enum SessionStatus {
         CREATED,
         IN_PROGRESS,
-        FINISHED
+        FINISHED,
     }
+
+    public Session(Object o, Long projectId, Long testerId, Long strategyId, int minutesDuration, String description, SessionStatus status, LocalDateTime creationDate, LocalDateTime startDate, LocalDateTime endDate) {
+    }
+
+
+    public Session(Long projectId, Long testerId, Long strategyId, int minutesDuration,
+                   String description, SessionStatus status, LocalDateTime creationDate,
+                   LocalDateTime startDate, LocalDateTime endDate) {
+        this(null, projectId, testerId, strategyId, minutesDuration, description,
+                status, creationDate, startDate, endDate);
+    }
+
 
     // Construtores
     public Session() {
@@ -34,6 +47,7 @@ public class Session {
         this.strategyId = strategyId;
         this.minutesDuration = minutesDuration;
     }
+
 
     // Getters e Setters
     public Long getId() {

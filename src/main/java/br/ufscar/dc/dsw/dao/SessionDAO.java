@@ -21,6 +21,7 @@ public class SessionDAO {
             PreparedStatement statement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
             statement.setLong(1, session.getProjectId());
+            statement.setLong(1, session.getProjectId());
             statement.setLong(2, session.getTesterId());
             statement.setLong(3, session.getStrategyId());
             statement.setInt(4, session.getMinutesDuration());
@@ -169,20 +170,20 @@ public class SessionDAO {
     private Session mapResultSetToSession(ResultSet resultSet) throws SQLException {
         Session session = new Session();
         session.setId(resultSet.getLong("id"));
-        session.setProjectId(resultSet.getLong("project_id"));
-        session.setTesterId(resultSet.getLong("tester_id"));
-        session.setStrategyId(resultSet.getLong("strategy_id"));
-        session.setMinutesDuration(resultSet.getInt("minutes_duration"));
-        session.setDescription(resultSet.getString("description"));
+        session.setProjectId(resultSet.getLong("projeto_id"));
+        session.setTesterId(resultSet.getLong("testador_id"));
+        session.setStrategyId(resultSet.getLong("estrategia_id"));
+        session.setMinutesDuration(resultSet.getInt("tempo_minutos"));
+        session.setDescription(resultSet.getString("descricao"));
         session.setStatus(Session.SessionStatus.valueOf(resultSet.getString("status")));
-        session.setCreationDate(resultSet.getTimestamp("creation_date").toLocalDateTime());
+        session.setCreationDate(resultSet.getTimestamp("data_criacao").toLocalDateTime());
 
-        Timestamp startDate = resultSet.getTimestamp("start_date");
+        Timestamp startDate = resultSet.getTimestamp("data_inicio");
         if (startDate != null) {
             session.setStartDate(startDate.toLocalDateTime());
         }
 
-        Timestamp endDate = resultSet.getTimestamp("end_date");
+        Timestamp endDate = resultSet.getTimestamp("data_fim");
         if (endDate != null) {
             session.setEndDate(endDate.toLocalDateTime());
         }

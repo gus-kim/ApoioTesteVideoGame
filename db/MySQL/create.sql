@@ -52,7 +52,7 @@ CREATE TABLE SessaoTeste
     estrategia_id BIGINT   NOT NULL,
     tempo_minutos INT      NOT NULL,
     descricao     TEXT,
-    status        ENUM('CRIADO', 'EM_EXECUCAO', 'FINALIZADO') DEFAULT 'CRIADO',
+    status        ENUM('CREATED', 'IN_PROGRESS', 'FINISHED') DEFAULT 'CREATED',
     data_criacao  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_inicio   DATETIME,
     data_fim      DATETIME,
