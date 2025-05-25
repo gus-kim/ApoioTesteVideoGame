@@ -87,8 +87,8 @@
                 <td>
                     <a href="${pageContext.request.contextPath}/admin/sessions/editar?id=${session.id}"
                        class="btn btn-primary">Editar</a>
-                    <button onclick="deleteSession(${session.id})"
-                            class="btn btn-danger">Remover</button>
+                    <a href="${pageContext.request.contextPath}/admin/sessions/remover?id=${session.id}"
+                            class="btn btn-danger" >Remover</a>
                 </td>
             </tr>
         </c:forEach>

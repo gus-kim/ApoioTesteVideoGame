@@ -86,6 +86,8 @@
             </select>
         </div>
 
+        <p>Mantenha as datas vazias caso não queira alterá-las</p>
+
         <div class="form-group">
             <label for="startDate">Data de Início:</label>
             <input id="startDate" name="startDate" type="datetime-local" required/>

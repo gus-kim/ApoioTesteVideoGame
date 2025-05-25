@@ -43,6 +43,9 @@ public class SessionsController extends HttpServlet {
                 case "/editar":
                     showEditForm(request, response);
                     break;
+                case "/remover": //todo: alterar para método DELETE
+                    deleteSession(request, response);
+                    break;
                 default:
                     listSessionsAdmin(request, response);
                     break;
@@ -68,25 +71,11 @@ public class SessionsController extends HttpServlet {
                     editSession(request, response);
                     break;
                 default:
-
+                    listSessions(request, response);
                     break;
             }
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String servletPath = request.getServletPath();
-        String pathInfo = request.getPathInfo();
-        if (pathInfo == null) pathInfo = "";
-        if ("/admin/sessions".equals(servletPath)) {
-            switch (pathInfo) {
-                case "/remover":
-                    deleteSession(request, response);
-                //utilizando estrutura de switch para o caso de novas implementações
-            }
         }
     }
 
