@@ -1,8 +1,10 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.dao.EstrategiaDAO;
+import br.ufscar.dc.dsw.dao.ProjetoDAO;
 import br.ufscar.dc.dsw.dao.SessionDAO;
-import br.ufscar.dc.dsw.model.DetailSession;
-import br.ufscar.dc.dsw.model.Session;
+import br.ufscar.dc.dsw.dao.UsuarioDAO;
+import br.ufscar.dc.dsw.model.*;
 import br.ufscar.dc.dsw.util.SessionService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -12,21 +14,24 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @WebServlet(name = "SessionsController", urlPatterns = {"/sessions", "/admin/sessions/*"})
 public class SessionsController extends HttpServlet {
 
     private SessionDAO sessionDAO;
+    private ProjetoDAO projetoDAO;
+    private UsuarioDAO usuarioDAO;
+    private EstrategiaDAO estrategiaDAO;
 
     public void init() {
         sessionDAO = new SessionDAO();
+        projetoDAO = new ProjetoDAO();
+        usuarioDAO = new UsuarioDAO();
+        estrategiaDAO = new EstrategiaDAO();
     }
 
     @Override
@@ -46,7 +51,11 @@ public class SessionsController extends HttpServlet {
         } else if ("/admin/sessions".equals(servletPath)) {
             switch (pathInfo) {
                 case "/novo":
-                    showNewForm(request, response);
+                    try {
+                        showNewForm(request, response);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case "/editar":
                     showEditForm(request, response);
@@ -113,8 +122,13 @@ public class SessionsController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        List<Projeto> projects = projetoDAO.listAllProjetos("");
+        request.setAttribute("projects", projects);
+        List<Usuario> testers = usuarioDAO.listarTesters();
+        request.setAttribute("testers", testers);
+        List<Estrategia> strategies = estrategiaDAO.listarTodos();
+        request.setAttribute("strategies", strategies);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/sessions-form.jsp");
         dispatcher.forward(request, response);
     }

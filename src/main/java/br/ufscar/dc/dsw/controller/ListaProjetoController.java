@@ -32,9 +32,7 @@ public class ListaProjetoController extends HttpServlet {
         // Busca projetos
         ProjetoDAO projetoDAO = new ProjetoDAO();
         List<Projeto> projetos = projetoDAO.listAllProjetos(
-                ordenarPor,
-                usuario.getId(),
-                usuario.isAdmin()
+                ordenarPor
         );
 
         // Retorna JSON

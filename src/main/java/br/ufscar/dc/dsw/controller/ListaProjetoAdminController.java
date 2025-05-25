@@ -5,6 +5,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
+import java.io.IOException;
+
 @WebServlet("/admin/lista-projetos")
 public class ListaProjetoAdminController extends HttpServlet {
 
@@ -15,10 +17,6 @@ public class ListaProjetoAdminController extends HttpServlet {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        if (usuario == null || !usuario.isAdmin()) {
-            response.sendRedirect("../login?error=acesso.negado");
-            return;
-        }
 
         request.getRequestDispatcher("/WEB-INF/views/admin/lista-projetos.jsp")
                 .forward(request, response);

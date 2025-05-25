@@ -8,6 +8,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +19,14 @@ public class CriaProjetoController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Verifica se é admin
-        if (!validarAdmin(request, response)) return;
-
         // Carrega testadores para o select
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        List<Usuario> testadores = usuarioDAO.listarTestadores();
+        List<Usuario> testadores = null;
+        try {
+            testadores = usuarioDAO.listarTesters();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         request.setAttribute("testadores", testadores);
 
         request.getRequestDispatcher("/WEB-INF/views/admin/criar-projeto.jsp")
@@ -33,8 +36,6 @@ public class CriaProjetoController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        if (!validarAdmin(request, response)) return;
 
         // Coleta dados do formulário
         String nome = request.getParameter("nome");
@@ -70,17 +71,4 @@ public class CriaProjetoController extends HttpServlet {
         }
     }
 
-    // Método para validar admin
-    private boolean validarAdmin(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-
-        HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-
-        if (usuario == null || !Usuario.isAdmin()) {
-            response.sendRedirect("../login?error=acesso.negado");
-            return false;
-        }
-        return true;
-    }
 }
