@@ -32,15 +32,7 @@
         <%-- Link público para todos --%>
         <li><a href="${pageContext.request.contextPath}/estrategias" class="botao-verde">Explorar Estratégias</a></li>
 
-        <%-- Link para ADMIN ou TESTADOR ativo, vermelho para outros --%>
-        <c:choose>
-            <c:when test="${not empty sessionScope.usuarioLogado && (sessionScope.usuarioLogado.papel == 'ADMIN' || sessionScope.usuarioLogado.papel == 'TESTADOR')}">
-                <li><a href="${pageContext.request.contextPath}/testador/criarSessao" class="botao-verde">Criar Sessão de Teste</a></li>
-            </c:when>
-            <c:otherwise>
-                <li><a href="${pageContext.request.contextPath}/testador/criarSessao" class="botao-vermelho">Criar Sessão de Teste (restrito)</a></li>
-            </c:otherwise>
-        </c:choose>
+            <li><a href="${pageContext.request.contextPath}/sessions" class="botao-verde">Explorar Sessões de Teste</a></li>
 
     </ul>
 </div>

@@ -41,7 +41,7 @@
                 <td>
                     <a href="${pageContext.request.contextPath}/admin/estrategias/editar?id=${estrategia.id}" class="btn btn-primary">Editar</a>
                     <a href="${pageContext.request.contextPath}/admin/estrategias/remover?id=${estrategia.id}" class="btn btn-danger"
-                       onclick="return confirm('Tem certeza que deseja remover esta estratégia?');">Remover</a>
+                       onclick="return confirm('Tem certeza que deseja remover esta estratégia?');" >Remover</a>
                 </td>
             </tr>
         </c:forEach>

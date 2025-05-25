@@ -1,0 +1,64 @@
+/* sessions.css - Estilos específicos para a página de sessões */
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.status-badge.created {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-badge.in_progress {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.status-badge.finished {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+/* Estilos para a tabela de sessões */
+.table.sessions {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.table.sessions th {
+    background-color: #f5f5f5;
+    padding: 12px;
+    text-align: left;
+}
+
+.table.sessions td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.table.sessions tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Estilos para os botões de ação */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
