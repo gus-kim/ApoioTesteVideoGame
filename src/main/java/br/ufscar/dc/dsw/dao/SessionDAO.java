@@ -16,6 +16,10 @@ public class SessionDAO {
     public void insert(Session session) {
         String sql = "INSERT INTO SessaoTeste (projeto_id, testador_id, estrategia_id, tempo_minutos, descricao, status, data_criacao, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        Timestamp startDate = session.getStartDate() == null ? null : Timestamp.valueOf(session.getStartDate());
+        Timestamp endDate = session.getEndDate() == null ? null : Timestamp.valueOf(session.getEndDate());
+
+
         try {
             Connection conn = ConexaoBD.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -26,9 +30,9 @@ public class SessionDAO {
             statement.setInt(4, session.getMinutesDuration());
             statement.setString(5, session.getDescription());
             statement.setString(6, session.getStatus().toString());
-            statement.setTimestamp(7, Timestamp.valueOf(session.getCreationDate()));
-            statement.setTimestamp(8, session.getStartDate() != null ? Timestamp.valueOf(session.getStartDate()) : null);
-            statement.setTimestamp(9, session.getEndDate() != null ? Timestamp.valueOf(session.getEndDate()) : null);
+            statement.setObject(7, Timestamp.valueOf(session.getCreationDate()));
+            statement.setObject(8, startDate);
+            statement.setObject(9, endDate);
 
             statement.executeUpdate();
 
@@ -177,16 +181,14 @@ public class SessionDAO {
         session.setDescription(resultSet.getString("descricao"));
         session.setStatus(Session.SessionStatus.valueOf(resultSet.getString("status")));
         session.setCreationDate(resultSet.getTimestamp("data_criacao").toLocalDateTime());
-
-        Timestamp startDate = resultSet.getTimestamp("data_inicio");
-        if (startDate != null) {
-            session.setStartDate(startDate.toLocalDateTime());
-        }
-
-        Timestamp endDate = resultSet.getTimestamp("data_fim");
-        if (endDate != null) {
-            session.setEndDate(endDate.toLocalDateTime());
-        }
+        if (resultSet.getTimestamp("data_inicio") != null)
+            session.setStartDate(resultSet.getTimestamp("data_inicio").toLocalDateTime());
+        else
+            session.setStartDate(null);
+        if (resultSet.getTimestamp("data_fim") != null)
+            session.setEndDate(resultSet.getTimestamp("data_fim").toLocalDateTime());
+        else
+            session.setEndDate(null);
 
         return session;
     }

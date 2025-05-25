@@ -1,7 +1,9 @@
 package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.dao.SessionDAO;
+import br.ufscar.dc.dsw.model.DetailSession;
 import br.ufscar.dc.dsw.model.Session;
+import br.ufscar.dc.dsw.util.SessionService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -34,7 +38,11 @@ public class SessionsController extends HttpServlet {
         if (pathInfo == null) pathInfo = "";
 
         if ("/sessions".equals(servletPath)) {
-            listSessions(request, response);
+            try {
+                listSessions(request, response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } else if ("/admin/sessions".equals(servletPath)) {
             switch (pathInfo) {
                 case "/novo":
@@ -47,7 +55,11 @@ public class SessionsController extends HttpServlet {
                     deleteSession(request, response);
                     break;
                 default:
-                    listSessionsAdmin(request, response);
+                    try {
+                        listSessionsAdmin(request, response);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
             }
         } else {
@@ -71,7 +83,11 @@ public class SessionsController extends HttpServlet {
                     editSession(request, response);
                     break;
                 default:
-                    listSessions(request, response);
+                    try {
+                        listSessions(request, response);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
             }
         } else {
@@ -79,21 +95,26 @@ public class SessionsController extends HttpServlet {
         }
     }
 
-    private void listSessions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void listSessions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         List<Session> sessions = sessionDAO.getAll();
+        List<DetailSession> detailSessions = SessionService.getSessionsInformation(sessions);
         request.setAttribute("sessions", sessions);
+        request.setAttribute("detailSessions", detailSessions);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/list-sessions.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void listSessionsAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void listSessionsAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         List<Session> sessions = sessionDAO.getAll();
+        List<DetailSession> detailSessions = SessionService.getSessionsInformation(sessions);
         request.setAttribute("sessions", sessions);
+        request.setAttribute("detailSessions", detailSessions);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/list-sessions.jsp");
         dispatcher.forward(request, response);
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/sessions-form.jsp");
         dispatcher.forward(request, response);
     }
@@ -173,8 +194,6 @@ public class SessionsController extends HttpServlet {
 
         Session existingSession = sessionDAO.getById(id);
 
-        assert startDate != null;
-        assert endDate != null;
         Session updatedSession = new Session();
         updatedSession.setId(existingSession.getId());
         updatedSession.setProjectId(projectId);
@@ -184,8 +203,8 @@ public class SessionsController extends HttpServlet {
         updatedSession.setDescription(description);
         updatedSession.setStatus(status);
         updatedSession.setCreationDate(existingSession.getCreationDate());
-        updatedSession.setStartDate(startDate);
-        updatedSession.setEndDate(endDate);
+        updatedSession.setStartDate(startDate != null ? startDate : existingSession.getStartDate());
+        updatedSession.setEndDate(endDate != null ? endDate : existingSession.getEndDate());
 
         sessionDAO.update(updatedSession);
         response.sendRedirect(request.getContextPath() + "/admin/sessions");

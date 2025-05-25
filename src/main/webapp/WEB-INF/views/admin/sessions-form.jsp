@@ -48,22 +48,41 @@
         </div>
 
         <div class="form-group">
-            <label for="projectId">ID do Projeto:</label>
-            <input id="projectId" name="projectId" type="number" min="1"
-                   value="${empty session.projectId ? '0' : session.projectId}" required />
+            <label for="projectInput">Projeto:</label>
+            <input id="projectInput" list="projectList" required />
+            <input type="hidden" id="projectId" name="projectId" value="${session.projectId}" />
+            <datalist id="projectList">
+                <c:forEach var="project" items="${projects}">
+                    <option value="${project.nome}" data-id="${project.id}" />
+                </c:forEach>
+            </datalist>
         </div>
 
-        <div class="form-group">
-            <label for="testerId">ID do Testador:</label>
-            <input id="testerId" name="testerId" type="number" min="1"
-                   value="${empty session.testerId ? '0' : session.testerId}" required />
-        </div>
 
         <div class="form-group">
-            <label for="strategyId">ID da Estratégia:</label>
-            <input id="strategyId" name="strategyId" type="number" min="1"
-                   value="${empty session.strategyId ? '0' : session.strategyId}" required />
+            <label for="testerInput">Testador:</label>
+            <input id="testerInput" list="testerList" required />
+            <input type="hidden" id="testerId" name="testerId" value="${session.testerId}" />
+            <datalist id="testerList">
+                <c:forEach var="tester" items="${testers}">
+                    <option value="${tester.nome}" data-id="${tester.id}" />
+                </c:forEach>
+            </datalist>
         </div>
+
+
+        <div class="form-group">
+            <label for="strategyInput">Estratégia:</label>
+            <input id="strategyInput" list="strategyList" required />
+            <input type="hidden" id="strategyId" name="strategyId" value="${session.strategyId}" />
+            <datalist id="strategyList">
+                <c:forEach var="strategy" items="${strategies}">
+                    <option value="${strategy.nome}" data-id="${strategy.id}" />
+                </c:forEach>
+            </datalist>
+        </div>
+
+
 
         <div class="form-group">
             <label for="minutesDuration">Duração (minutos):</label>
@@ -107,5 +126,47 @@
         </button>
     </form>
 </div>
+<script>
+    function bindDatalistInput(visibleInputId, datalistId, hiddenInputId) {
+        const visibleInput = document.getElementById(visibleInputId);
+        const hiddenInput = document.getElementById(hiddenInputId);
+        const datalist = document.getElementById(datalistId);
+        const options = datalist.options;
+
+        // Atualiza o hidden com o ID correspondente ao nome
+        visibleInput.addEventListener("change", () => {
+            const inputValue = visibleInput.value;
+            let found = false;
+            for (let option of options) {
+                if (option.value === inputValue) {
+                    hiddenInput.value = option.getAttribute("data-id");
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                hiddenInput.value = "";
+                alert("Selecione uma opção válida da lista.");
+            }
+        });
+
+        // Quando carregar a página, preencher o campo visível com base no hidden (modo edição)
+        window.addEventListener("DOMContentLoaded", () => {
+            const currentId = hiddenInput.value;
+            for (let option of options) {
+                if (option.getAttribute("data-id") === currentId) {
+                    visibleInput.value = option.value;
+                    break;
+                }
+            }
+        });
+    }
+
+    // Bind para os 3 campos
+    bindDatalistInput("projectInput", "projectList", "projectId");
+    bindDatalistInput("testerInput", "testerList", "testerId");
+    bindDatalistInput("strategyInput", "strategyList", "strategyId");
+</script>
+
 </body>
 </html>
