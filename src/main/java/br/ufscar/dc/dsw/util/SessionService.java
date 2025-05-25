@@ -22,7 +22,7 @@ public class SessionService {
         for (Session session : sessions) {
             String user = usuarioDAO.buscarPorId(session.getTesterId()).getNome();
             String strategy = estrategiaDAO.buscarPorId(session.getStrategyId()).getNome();
-            String project = projetoDAO.getProjetoById(session.getProjectId()).getNome();
+            String project = projetoDAO.buscarPorId(session.getProjectId()).getNome();
             DetailSession detailSession = new DetailSession();
             detailSession.setProjectName(project);
             detailSession.setTesterName(user);

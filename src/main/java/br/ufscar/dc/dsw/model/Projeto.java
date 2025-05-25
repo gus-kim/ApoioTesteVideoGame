@@ -66,7 +66,6 @@ public class Projeto {
         this.dataCriacao = dataCriacao;
     }
 
-    // Atualização do toString
     @Override
     public String toString() {
         return "Projeto [id=" + id + ", nome=" + nome + ", descricao=" + descricao

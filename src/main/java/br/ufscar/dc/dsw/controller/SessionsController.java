@@ -123,7 +123,7 @@ public class SessionsController extends HttpServlet {
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        List<Projeto> projects = projetoDAO.listAllProjetos("");
+        List<Projeto> projects = projetoDAO.listarTodos();
         request.setAttribute("projects", projects);
         List<Usuario> testers = usuarioDAO.listarTesters();
         request.setAttribute("testers", testers);
