@@ -49,7 +49,7 @@
 
         <div class="form-group">
             <label for="projectInput">Projeto:</label>
-            <input id="projectInput" list="projectList" required />
+            <input id="projectInput" list="projectList" autocomplete="off" required />
             <input type="hidden" id="projectId" name="projectId" value="${session.projectId}" />
             <datalist id="projectList">
                 <c:forEach var="project" items="${projects}">
@@ -61,9 +61,9 @@
 
         <div class="form-group">
             <label for="testerInput">Testador:</label>
-            <input id="testerInput" list="testerList" required />
+            <input id="testerInput" list="testerList" autocomplete="off" required />
             <input type="hidden" id="testerId" name="testerId" value="${session.testerId}" />
-            <datalist id="testerList">
+            <datalist id="testerList" >
                 <c:forEach var="tester" items="${testers}">
                     <option value="${tester.nome}" data-id="${tester.id}" />
                 </c:forEach>
@@ -73,7 +73,7 @@
 
         <div class="form-group">
             <label for="strategyInput">Estratégia:</label>
-            <input id="strategyInput" list="strategyList" required />
+            <input id="strategyInput" list="strategyList" autocomplete="off" required />
             <input type="hidden" id="strategyId" name="strategyId" value="${session.strategyId}" />
             <datalist id="strategyList">
                 <c:forEach var="strategy" items="${strategies}">
@@ -98,7 +98,6 @@
         <div class="form-group">
             <label for="status">Status:</label>
             <select id="status" name="status" required>
-                <option value="">Selecione...</option>
                 <option value="CREATED" ${session.status == 'CREATED' ? 'selected' : ''}>Criada</option>
                 <option value="IN_PROGRESS" ${session.status == 'IN_PROGRESS' ? 'selected' : ''}>Em Progresso</option>
                 <option value="FINISHED" ${session.status == 'FINISHED' ? 'selected' : ''}>Finalizada</option>
@@ -133,7 +132,7 @@
         const datalist = document.getElementById(datalistId);
         const options = datalist.options;
 
-        // Atualiza o hidden com o ID correspondente ao nome
+        // Preencher hidden com o ID correspondente ao nome digitado
         visibleInput.addEventListener("change", () => {
             const inputValue = visibleInput.value;
             let found = false;
@@ -146,11 +145,10 @@
             }
             if (!found) {
                 hiddenInput.value = "";
-                alert("Selecione uma opção válida da lista.");
             }
         });
 
-        // Quando carregar a página, preencher o campo visível com base no hidden (modo edição)
+        // No carregamento da página, preencher o campo visível com base no hidden (modo edição)
         window.addEventListener("DOMContentLoaded", () => {
             const currentId = hiddenInput.value;
             for (let option of options) {
@@ -162,11 +160,50 @@
         });
     }
 
-    // Bind para os 3 campos
     bindDatalistInput("projectInput", "projectList", "projectId");
     bindDatalistInput("testerInput", "testerList", "testerId");
     bindDatalistInput("strategyInput", "strategyList", "strategyId");
+
+    // Previne envio se inputs forem inválidos
+    document.querySelector("form").addEventListener("submit", function (event) {
+        const fields = [
+            { visible: "projectInput", hidden: "projectId", list: "projectList" },
+            { visible: "testerInput", hidden: "testerId", list: "testerList" },
+            { visible: "strategyInput", hidden: "strategyId", list: "strategyList" }
+        ];
+
+        let isValid = true;
+
+        for (let field of fields) {
+            const input = document.getElementById(field.visible);
+            const hidden = document.getElementById(field.hidden);
+            const datalist = document.getElementById(field.list);
+            const options = datalist.options;
+            let matched = false;
+
+            for (let option of options) {
+                if (option.value === input.value) {
+                    matched = true;
+                    hidden.value = option.getAttribute("data-id");
+                    break;
+                }
+            }
+
+            if (!matched) {
+                alert(`Por favor, selecione uma opção válida para o campo "${input.previousElementSibling.innerText}".`);
+                hidden.value = "";
+                input.focus();
+                isValid = false;
+                break; // para no primeiro campo inválido
+            }
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
 </script>
+
 
 </body>
 </html>

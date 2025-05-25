@@ -1,7 +1,7 @@
 package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.dao.EstrategiaDAO;
-import br.ufscar.dc.dsw.dao.ProjetoDAO;
+import br.ufscar.dc.dsw.dao.MockedProjectDAO;
 import br.ufscar.dc.dsw.dao.SessionDAO;
 import br.ufscar.dc.dsw.dao.UsuarioDAO;
 import br.ufscar.dc.dsw.model.*;
@@ -23,13 +23,13 @@ import java.util.List;
 public class SessionsController extends HttpServlet {
 
     private SessionDAO sessionDAO;
-    private ProjetoDAO projetoDAO;
+    private MockedProjectDAO projetoDAO;
     private UsuarioDAO usuarioDAO;
     private EstrategiaDAO estrategiaDAO;
 
     public void init() {
         sessionDAO = new SessionDAO();
-        projetoDAO = new ProjetoDAO();
+        projetoDAO = new MockedProjectDAO();
         usuarioDAO = new UsuarioDAO();
         estrategiaDAO = new EstrategiaDAO();
     }
@@ -123,7 +123,7 @@ public class SessionsController extends HttpServlet {
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        List<Projeto> projects = projetoDAO.listAllProjetos("");
+        List<Projeto> projects = projetoDAO.listarTodos();
         request.setAttribute("projects", projects);
         List<Usuario> testers = usuarioDAO.listarTesters();
         request.setAttribute("testers", testers);
