@@ -14,13 +14,12 @@ import java.util.List;
 public class SessionDAO {
 
     public void insert(Session session) {
-        String sql = "INSERT INTO SessaoTeste (project_id, tester_id, strategy_id, minutes_duration, description, status, creation_date, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO SessaoTeste (projeto_id, testador_id, estrategia_id, tempo_minutos, descricao, status, data_criacao, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection conn = ConexaoBD.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
-            statement.setLong(1, session.getProjectId());
             statement.setLong(1, session.getProjectId());
             statement.setLong(2, session.getTesterId());
             statement.setLong(3, session.getStrategyId());
@@ -48,11 +47,12 @@ public class SessionDAO {
     }
 
     public void update(Session session) {
-        String sql = "UPDATE SessaoTeste SET project_id = ?, tester_id = ?, strategy_id = ?, minutes_duration = ?, description = ?, status = ?, creation_date = ?, start_date = ?, end_date = ? WHERE id = ?";
+        String sql = "UPDATE SessaoTeste SET projeto_id = ?, testador_id = ?, estrategia_id = ?, tempo_minutos = ?, descricao = ?, status = ?, data_criacao = ?, data_inicio = ?, data_fim = ? WHERE id = ?";
 
         try {
             Connection conn = ConexaoBD.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
+
 
             statement.setLong(1, session.getProjectId());
             statement.setLong(2, session.getTesterId());

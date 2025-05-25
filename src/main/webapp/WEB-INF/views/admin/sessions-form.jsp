@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,38 +26,54 @@
         </c:choose>
     </h1>
 
+    <c:if test="${not empty error}">
+        <div class="alert alert-danger">
+            <c:choose>
+                <c:when test="${error == 'missing_fields'}">Preencha todos os campos obrigatórios!</c:when>
+                <c:when test="${error == 'invalid_numbers'}">IDs e duração devem ser números válidos!</c:when>
+                <c:when test="${error == 'invalid_status'}">Status inválido selecionado!</c:when>
+                <c:when test="${error == 'invalid_dates'}">Datas de início e término são obrigatórias!</c:when>
+                <c:otherwise>Ocorreu um erro ao processar a solicitação.</c:otherwise>
+            </c:choose>
+        </div>
+    </c:if>
+
     <a href="${pageContext.request.contextPath}/admin/sessions" class="btn btn-secondary">Voltar</a>
 
-    <form action="${pageContext.request.contextPath}/admin/sessions/${session.id == null ? 'inserir' : 'atualizar'}" method="post" novalidate>
+    <form action="${pageContext.request.contextPath}/admin/sessions/${session.id == null ? "inserir" : "atualizar"}" method="post" novalidate>
 
-        <c:if test="${session.id != null}">
-            <input type="hidden" name="id" value="${session.id}" />
-        </c:if>
+        <div>
+            <label for="id"></label>
+            <input id="id" name="id" type="number" hidden="hidden" value="${session.id}">
+        </div>
 
-        //ADICIONAR AJAX
         <div class="form-group">
             <label for="projectId">ID do Projeto:</label>
-            <input id="projectId" name="projectId" type="number" value="${session.projectId}" required />
+            <input id="projectId" name="projectId" type="number" min="1"
+                   value="${empty session.projectId ? '0' : session.projectId}" required />
         </div>
 
         <div class="form-group">
             <label for="testerId">ID do Testador:</label>
-            <input id="testerId" name="testerId" type="number" value="${session.testerId}" required />
+            <input id="testerId" name="testerId" type="number" min="1"
+                   value="${empty session.testerId ? '0' : session.testerId}" required />
         </div>
 
         <div class="form-group">
             <label for="strategyId">ID da Estratégia:</label>
-            <input id="strategyId" name="strategyId" type="number" value="${session.strategyId}" required />
+            <input id="strategyId" name="strategyId" type="number" min="1"
+                   value="${empty session.strategyId ? '0' : session.strategyId}" required />
         </div>
 
         <div class="form-group">
             <label for="minutesDuration">Duração (minutos):</label>
-            <input id="minutesDuration" name="minutesDuration" type="number" value="${session.minutesDuration}" required />
+            <input id="minutesDuration" name="minutesDuration" type="number" min="1"
+                   value="${empty session.minutesDuration ? '0' : session.minutesDuration}" required />
         </div>
 
         <div class="form-group">
             <label for="description">Descrição:</label>
-            <textarea id="description" name="description">${session.description}</textarea>
+            <textarea id="description" name="description">${empty session.description ? '' : session.description}</textarea>
         </div>
 
         <div class="form-group">
@@ -71,14 +88,13 @@
 
         <div class="form-group">
             <label for="startDate">Data de Início:</label>
-            <input id="startDate" name="startDate" type="datetime-local"
-                   value="<fmt:formatDate value="${session.startDate}" pattern="yyyy-MM-dd'T'HH:mm" />" />
+            <input id="startDate" name="startDate" type="datetime-local" required/>
+
         </div>
 
         <div class="form-group">
             <label for="endDate">Data de Término:</label>
-            <input id="endDate" name="endDate" type="datetime-local"
-                   value="<fmt:formatDate value="${session.endDate}" pattern="yyyy-MM-dd'T'HH:mm" />" />
+            <input id="endDate" name="endDate" type="datetime-local" required/>
         </div>
 
         <button type="submit" class="btn">

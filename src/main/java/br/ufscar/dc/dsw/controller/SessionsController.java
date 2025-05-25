@@ -121,8 +121,7 @@ public class SessionsController extends HttpServlet {
     }
 
     private void insertSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        Project projectId = Long.parseLong(request.getParameter("projectId")); IMPLEMENTAR CORRETAMENTE QUANDO HOUVER IMPLEMENTAÇÃO DE PROJECT
-        Long projectId = (long) 1; // valor mockado
+        Long projectId = (long) Integer.parseInt(request.getParameter("projectId"));
         Long testerId = Long.parseLong(request.getParameter("testerId"));
         Long strategyId = Long.parseLong(request.getParameter("strategyId"));
         int minutesDuration = Integer.parseInt(request.getParameter("minutesDuration"));
@@ -145,23 +144,22 @@ public class SessionsController extends HttpServlet {
 
         assert startDate != null;
         assert endDate != null;
-        Session session = new Session(
-                projectId,
-                testerId,
-                strategyId,
-                minutesDuration,
-                description,
-                status,
-                LocalDateTime.now(), // creationDate
-                startDate,
-                endDate
-        );
+        Session session = new Session();
+        session.setProjectId(projectId);
+        session.setTesterId(testerId);
+        session.setStrategyId(strategyId);
+        session.setMinutesDuration(minutesDuration);
+        session.setDescription(description);
+        session.setStatus(status);
+        session.setStartDate(startDate);
+        session.setEndDate(endDate);
 
         sessionDAO.insert(session);
         response.sendRedirect(request.getContextPath() + "/admin/sessions");
     }
 
     private void editSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         Long id = Long.parseLong(request.getParameter("id"));
         Long projectId = Long.parseLong(request.getParameter("projectId"));
         Long testerId = Long.parseLong(request.getParameter("testerId"));
@@ -188,18 +186,17 @@ public class SessionsController extends HttpServlet {
 
         assert startDate != null;
         assert endDate != null;
-        Session updatedSession = new Session(
-                id,
-                projectId,
-                testerId,
-                strategyId,
-                minutesDuration,
-                description,
-                status,
-                existingSession.getCreationDate(), // mantém a data original
-                startDate,
-                endDate
-        );
+        Session updatedSession = new Session();
+        updatedSession.setId(existingSession.getId());
+        updatedSession.setProjectId(projectId);
+        updatedSession.setTesterId(testerId);
+        updatedSession.setStrategyId(strategyId);
+        updatedSession.setMinutesDuration(minutesDuration);
+        updatedSession.setDescription(description);
+        updatedSession.setStatus(status);
+        updatedSession.setCreationDate(existingSession.getCreationDate());
+        updatedSession.setStartDate(startDate);
+        updatedSession.setEndDate(endDate);
 
         sessionDAO.update(updatedSession);
         response.sendRedirect(request.getContextPath() + "/admin/sessions");
