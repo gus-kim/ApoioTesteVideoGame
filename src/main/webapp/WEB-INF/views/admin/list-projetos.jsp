@@ -44,7 +44,7 @@
         <td><fmt:formatDate value="${projeto.dataCriacao}" pattern="dd/MM/yyyy HH:mm"/></td>
         <td>
           <a href="${pageContext.request.contextPath}/admin/projetos/editar?id=${projeto.id}"
-             class="btn btn-secondary">Editar</a>
+             class="btn btn-primary">Editar</a>
           <a href="${pageContext.request.contextPath}/admin/projetos/remover?id=${projeto.id}"
              class="btn btn-danger"
              onclick="return confirm('Tem certeza?')">Excluir</a>

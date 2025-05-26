@@ -55,7 +55,7 @@
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Salvar</button>
       <a href="${pageContext.request.contextPath}/admin/projetos"
-         class="btn btn-secondary">Cancelar</a>
+         class="btn btn-danger">Cancelar</a>
     </div>
   </form>
 </div>
