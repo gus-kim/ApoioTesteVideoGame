@@ -40,12 +40,16 @@
             <tr>
                 <td>${bug.id}</td>
                 <td>${bug.descricao}</td>
-                <td>${bug.dataRegistro}</td>
+                <td>
+                    <tags:localDate date="${bug.dataRegistro}" />
+                </td>
                 <c:if test="${usuario.papel == 'ADMIN' || usuario.papel == 'TESTADOR'}">
                     <td>
-                        <a href="${pageContext.request.contextPath}/bugs/remover?id=${bug.id}">
-                            <button>Remover</button>
-                        </a>
+                        <button class="btn btn-danger"
+                                onclick="confirmarRemocao(${bug.id})">
+                            Remover
+                        </button>
+
                     </td>
                 </c:if>
             </tr>
@@ -55,4 +59,12 @@
 </div>
 
 </body>
+<script>
+    function confirmarRemocao(bugId) {
+        if (confirm("Tem certeza que deseja remover este bug?")) {
+            window.location.href = `${pageContext.request.contextPath}/bugs/remover?id=${bugId}`;
+        }
+    }
+</script>
+
 </html>
