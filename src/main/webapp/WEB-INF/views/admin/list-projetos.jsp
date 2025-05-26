@@ -1,28 +1,33 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
   <title>Lista de Projetos</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/global.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/base.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/list.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <div class="container">
   <h1>Projetos</h1>
-  <a href="${pageContext.request.contextPath}/dashboard" class="btn">Voltar</a>
-  <a href="${pageContext.request.contextPath}/admin/projetos/novo" class="btn">Novo Projeto</a>
+  <div class="button-group">
+    <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-secondary">Voltar</a>
+    <a href="${pageContext.request.contextPath}/admin/projetos/novo" class="btn btn-primary">Novo Projeto</a>
+  </div>
 
-  <!-- Dropdown básico usando select -->
-  <select class="sort-select" style="margin: 15px 0; padding: 5px;">
+  <select class="sort-select">
     <option value="">Ordenar por</option>
     <option value="nome">Nome</option>
     <option value="dataCriacao">Data de Criação</option>
   </select>
 
-  <!-- Tabela de Projetos -->
-  <table id="tabela-projetos">
+  <table class="table">
     <thead>
     <tr>
       <th>Nome</th>
@@ -38,9 +43,11 @@
         <td>${projeto.descricao}</td>
         <td><fmt:formatDate value="${projeto.dataCriacao}" pattern="dd/MM/yyyy HH:mm"/></td>
         <td>
-          <a href="${pageContext.request.contextPath}/admin/projetos/editar?id=${projeto.id}" class="btn-editar">Editar</a>
+          <a href="${pageContext.request.contextPath}/admin/projetos/editar?id=${projeto.id}"
+             class="btn btn-secondary">Editar</a>
           <a href="${pageContext.request.contextPath}/admin/projetos/remover?id=${projeto.id}"
-             class="btn-excluir" onclick="return confirm('Tem certeza?')">Excluir</a>
+             class="btn btn-danger"
+             onclick="return confirm('Tem certeza?')">Excluir</a>
         </td>
       </tr>
     </c:forEach>
@@ -50,7 +57,6 @@
 
 <script>
   $(document).ready(function() {
-    // Ordenação via select
     $(".sort-select").change(function() {
       const sort = $(this).val();
       if (sort) {
@@ -68,13 +74,15 @@
                   <td>${projeto.descricao}</td>
                   <td>${dataCriacao}</td>
                   <td>
-                      <a href="${pageContext.request.contextPath}/admin/projetos/editar?id=${projeto.id}">Editar</a>
+                      <a href="${pageContext.request.contextPath}/admin/projetos/editar?id=${projeto.id}"
+                         class="btn btn-secondary">Editar</a>
                       <a href="${pageContext.request.contextPath}/admin/projetos/remover?id=${projeto.id}"
+                         class="btn btn-danger"
                          onclick="return confirm('Tem certeza?')">Excluir</a>
                   </td>
               </tr>`;
             });
-            $("#tabela-projetos tbody").html(html);
+            $(".table tbody").html(html);
           }
         });
       }

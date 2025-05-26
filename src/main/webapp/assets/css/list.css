@@ -1,0 +1,23 @@
+.button-group {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.sort-select {
+    margin: 15px 0;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 200px;
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    width: 220px;
+}
+
+.table td a {
+    margin: 0 4px;
+}

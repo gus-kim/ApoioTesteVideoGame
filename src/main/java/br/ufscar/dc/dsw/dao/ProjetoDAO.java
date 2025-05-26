@@ -10,7 +10,7 @@ import java.util.List;
 public class ProjetoDAO {
 
     public void inserir(Projeto projeto) throws SQLException {
-        String sqlProjeto = "INSERT INTO Projeto (nome, descricao, data_criacao) VALUES (?, ?, ?)";
+        String sqlProjeto = "INSERT INTO Projeto (nome, descricao) VALUES (?, ?)";
         String sqlMembro = "INSERT INTO MembroProjeto (projeto_id, usuario_id) VALUES (?, ?)";
 
         try (Connection conn = ConexaoBD.getConnection()) {
@@ -22,7 +22,6 @@ public class ProjetoDAO {
                 // Insere Projeto
                 stmtProjeto.setString(1, projeto.getNome());
                 stmtProjeto.setString(2, projeto.getDescricao());
-                stmtProjeto.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
                 stmtProjeto.executeUpdate();
 
                 // Obtém ID gerado
