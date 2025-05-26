@@ -99,5 +99,5 @@ VALUES (1, 2),
 
 -- Sessões de teste
 INSERT INTO SessaoTeste (projeto_id, testador_id, estrategia_id, tempo_minutos, descricao, status)
-VALUES (1, 2, 1, 30, 'Primeira sessão no jogo de corrida', 'CRIADO'),
-       (2, 3, 2, 45, 'Testando interfaces do RPG', 'CRIADO');
+VALUES (1, 2, 1, 30, 'Primeira sessão no jogo de corrida', 'CREATED'),
+       (2, 3, 2, 45, 'Testando interfaces do RPG', 'CREATED');
