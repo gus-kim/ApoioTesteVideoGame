@@ -23,13 +23,13 @@ import java.util.List;
 public class SessionsController extends HttpServlet {
 
     private SessionDAO sessionDAO;
-    private MockedProjectDAO projetoDAO;
+    private MockedProjectDAO projetoDAO; //TROCAR PARA O DAO CORRETO
     private UsuarioDAO usuarioDAO;
     private EstrategiaDAO estrategiaDAO;
 
     public void init() {
         sessionDAO = new SessionDAO();
-        projetoDAO = new MockedProjectDAO();
+        projetoDAO = new MockedProjectDAO(); //TROCAR PARA O DAO CORRETO
         usuarioDAO = new UsuarioDAO();
         estrategiaDAO = new EstrategiaDAO();
     }
@@ -123,7 +123,7 @@ public class SessionsController extends HttpServlet {
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        List<Projeto> projects = projetoDAO.listarTodos();
+        List<Projeto> projects = projetoDAO.listarTodos(); //VERIFICAR SE O NOME DO METODO É ESSE NO NOVO DAO
         request.setAttribute("projects", projects);
         List<Usuario> testers = usuarioDAO.listarTesters();
         request.setAttribute("testers", testers);
