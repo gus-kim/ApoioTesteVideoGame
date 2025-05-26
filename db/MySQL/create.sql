@@ -82,7 +82,7 @@ INSERT INTO Estrategia (nome, descricao, exemplos, dicas, imagem_url)
 VALUES ('Exploração Cega', 'O testador joga livremente sem direções específicas.', 'Jogar sem seguir missões.',
         'Observe o ambiente ao redor.', 'https://i.pinimg.com/736x/b6/53/78/b653788688009519e3adf51b97c7f26a.jpg'),
        ('Mapeamento de Interface', 'Testa interações com menus e HUD.', 'Abrir menus repetidamente.',
-        'Teste diferentes resoluções de tela.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMeI2MMGbqUQj48qInce3YzvyKr4cIjHoVMA&s'),
+        'Teste diferentes resoluções de tela.', 'https://servicosweb.cnpq.br/wspessoa/servletrecuperafoto?tipo=1&id=K4711635Z7'),
        ('Testes de Limite', 'Verifica comportamentos em extremos do jogo.', 'Pular da borda do mapa.',
         'Tente romper limites de movimento.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThLySpWdov9nee08vMIFXuSkYy3mwwu3JmuQ&s');
 
