@@ -4,7 +4,6 @@ import br.ufscar.dc.dsw.dao.ProjetoDAO;
 import br.ufscar.dc.dsw.dao.UsuarioDAO;
 import br.ufscar.dc.dsw.model.Projeto;
 import br.ufscar.dc.dsw.model.Usuario;
-import br.ufscar.dc.dsw.util.Erro;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,8 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -34,26 +33,32 @@ public class ProjetoController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String action = request.getPathInfo();
-        if (action == null) action = "";
+        String servletPath = request.getServletPath(); // "/admin/projetos"
+        String pathInfo = request.getPathInfo();
+
+        if (pathInfo == null) pathInfo = "";
 
         try {
-            switch (action) {
-                case "/novo":
-                    showNewForm(request, response);
-                    break;
-                case "/editar":
-                    showEditForm(request, response);
-                    break;
-                case "/remover":
-                    deleteProjeto(request, response);
-                    break;
-                default:
-                    listProjetos(request, response);
-                    break;
+            if ("/admin/projetos".equals(servletPath)) {
+                switch (pathInfo) {
+                    case "/novo":
+                        showNewForm(request, response);
+                        break;
+                    case "/editar":
+                        showEditForm(request, response);
+                        break;
+                    case "/remover":
+                        deleteProjeto(request, response);
+                        break;
+                    default:
+                        listProjetos(request, response);
+                        break;
+                }
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
-        } catch (SQLException ex) {
-            throw new ServletException(ex);
+        } catch (SQLException e) {
+            throw new ServletException(e);
         }
     }
 
@@ -61,23 +66,29 @@ public class ProjetoController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String action = request.getPathInfo();
-        if (action == null) action = "";
+        String servletPath = request.getServletPath();
+        String pathInfo = request.getPathInfo();
+
+        if (pathInfo == null) pathInfo = "";
 
         try {
-            switch (action) {
-                case "/inserir":
-                    insertProjeto(request, response);
-                    break;
-                case "/atualizar":
-                    updateProjeto(request, response);
-                    break;
-                default:
-                    listProjetos(request, response);
-                    break;
+            if ("/admin/projetos".equals(servletPath)) {
+                switch (pathInfo) {
+                    case "/inserir":
+                        insertProjeto(request, response);
+                        break;
+                    case "/atualizar":
+                        updateProjeto(request, response);
+                        break;
+                    default:
+                        listProjetos(request, response);
+                        break;
+                }
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
-        } catch (SQLException ex) {
-            throw new ServletException(ex);
+        } catch (SQLException e) {
+            throw new ServletException(e);
         }
     }
 
@@ -112,10 +123,15 @@ public class ProjetoController extends HttpServlet {
 
     private String convertToJson(List<Projeto> projetos) {
         StringBuilder json = new StringBuilder("[");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // Formato ISO
         for (Projeto p : projetos) {
+            String nome = p.getNome().replace("\"", "\\\"");
+            String descricao = p.getDescricao().replace("\"", "\\\"");
+            String dataISO = sdf.format(p.getDataCriacao());
+
             json.append(String.format(
                     "{\"id\":%d,\"nome\":\"%s\",\"descricao\":\"%s\",\"dataCriacao\":\"%s\"},",
-                    p.getId(), p.getNome(), p.getDescricao(), p.getDataCriacao()
+                    p.getId(), nome, descricao, dataISO
             ));
         }
         if (!projetos.isEmpty()) json.deleteCharAt(json.length() - 1);
@@ -128,7 +144,8 @@ public class ProjetoController extends HttpServlet {
 
         List<Usuario> membros = usuarioDAO.listarTesters();
         request.setAttribute("membros", membros);
-        request.getRequestDispatcher("/WEB-INF/views/admin/projeto.jsp").forward(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/projeto-form.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
@@ -139,7 +156,8 @@ public class ProjetoController extends HttpServlet {
         List<Usuario> membros = usuarioDAO.listarTesters();
         request.setAttribute("projeto", projeto);
         request.setAttribute("membros", membros);
-        request.getRequestDispatcher("/WEB-INF/views/admin/projeto.jsp").forward(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/projeto-form.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void insertProjeto(HttpServletRequest request, HttpServletResponse response)
@@ -161,16 +179,27 @@ public class ProjetoController extends HttpServlet {
 
     private Projeto extractProjetoFromRequest(HttpServletRequest request) {
         Projeto projeto = new Projeto();
-        projeto.setNome(request.getParameter("nome"));
-        projeto.setDescricao(request.getParameter("descricao"));
+
+        String nome = request.getParameter("nome");
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O campo Nome é obrigatório");
+        }
+        projeto.setNome(nome.trim());
+
+        String descricao = request.getParameter("descricao");
+        projeto.setDescricao(descricao != null ? descricao.trim() : null);
+
         String[] membros = request.getParameterValues("membros");
         List<Long> membrosIds = new ArrayList<>();
         if (membros != null) {
             for (String id : membros) {
-                membrosIds.add(Long.parseLong(id));
+                if (!id.isEmpty()) { // Evita conversão de strings vazias
+                    membrosIds.add(Long.parseLong(id));
+                }
             }
         }
         projeto.setMembros(membrosIds);
+
         return projeto;
     }
 
