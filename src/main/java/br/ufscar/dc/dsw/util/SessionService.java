@@ -14,7 +14,7 @@ public class SessionService {
 
     private static final UsuarioDAO usuarioDAO = new UsuarioDAO();
     private static final EstrategiaDAO estrategiaDAO = new EstrategiaDAO();
-    private static final MockedProjectDAO projetoDAO = new MockedProjectDAO();
+    private static final MockedProjectDAO projetoDAO = new MockedProjectDAO(); //TROCAR PARA O DAO CORRETO
 
 
     public static List<DetailSession> getSessionsInformation(List<Session> sessions) throws SQLException {
@@ -22,7 +22,7 @@ public class SessionService {
         for (Session session : sessions) {
             String user = usuarioDAO.buscarPorId(session.getTesterId()).getNome();
             String strategy = estrategiaDAO.buscarPorId(session.getStrategyId()).getNome();
-            String project = projetoDAO.getById(session.getProjectId()).getNome();
+            String project = projetoDAO.getById(session.getProjectId()).getNome(); //VERIFICAR SE O NOME DO METODO É ESSE NO NOVO DAO
             DetailSession detailSession = new DetailSession();
             detailSession.setProjectName(project);
             detailSession.setTesterName(user);
