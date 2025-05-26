@@ -1,7 +1,7 @@
 package br.ufscar.dc.dsw.util;
 
 import br.ufscar.dc.dsw.dao.EstrategiaDAO;
-import br.ufscar.dc.dsw.dao.MockedProjectDAO;
+import br.ufscar.dc.dsw.dao.ProjetoDAO;
 import br.ufscar.dc.dsw.dao.UsuarioDAO;
 import br.ufscar.dc.dsw.model.DetailSession;
 import br.ufscar.dc.dsw.model.Session;
@@ -14,7 +14,7 @@ public class SessionService {
 
     private static final UsuarioDAO usuarioDAO = new UsuarioDAO();
     private static final EstrategiaDAO estrategiaDAO = new EstrategiaDAO();
-    private static final MockedProjectDAO projetoDAO = new MockedProjectDAO(); //TROCAR PARA O DAO CORRETO
+    private static final ProjetoDAO projetoDAO = new ProjetoDAO();
 
 
     public static List<DetailSession> getSessionsInformation(List<Session> sessions) throws SQLException {
@@ -22,7 +22,7 @@ public class SessionService {
         for (Session session : sessions) {
             String user = usuarioDAO.buscarPorId(session.getTesterId()).getNome();
             String strategy = estrategiaDAO.buscarPorId(session.getStrategyId()).getNome();
-            String project = projetoDAO.getById(session.getProjectId()).getNome(); //VERIFICAR SE O NOME DO METODO É ESSE NO NOVO DAO
+            String project = projetoDAO.getProjetoById(session.getProjectId()).getNome();
             DetailSession detailSession = new DetailSession();
             detailSession.setProjectName(project);
             detailSession.setTesterName(user);

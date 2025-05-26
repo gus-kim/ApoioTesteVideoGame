@@ -22,10 +22,12 @@
             <c:when test="${not empty sessionScope.usuarioLogado && sessionScope.usuarioLogado.papel == 'ADMIN'}">
                 <li><a href="${pageContext.request.contextPath}/admin/administradores" class="botao-verde">Gerenciar Administradores</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/testers" class="botao-verde">Gerenciar Testadores</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/projetos" class="botao-verde">Novo Projeto</a></li>
             </c:when>
             <c:otherwise>
                 <li><a href="${pageContext.request.contextPath}/admin/administradores" class="botao-vermelho">Gerenciar Administradores (restrito)</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/testers" class="botao-vermelho">Gerenciar Testadores (restrito)</a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/projetos" class="botao-vermelho">Novo Projeto (restrito)</a></li>
             </c:otherwise>
         </c:choose>
 
