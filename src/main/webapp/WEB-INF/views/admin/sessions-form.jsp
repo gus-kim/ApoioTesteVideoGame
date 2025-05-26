@@ -95,37 +95,59 @@
             <textarea id="description" name="description">${empty session.description ? '' : session.description}</textarea>
         </div>
 
-        <div class="form-group">
-            <label for="status">Status:</label>
-            <select id="status" name="status" required>
+        <div class="form-group" hidden="hidden">
+            <label for="status" hidden="hidden">Status:</label>
+            <select id="status" name="status" required hidden="hidden">
                 <option value="CREATED" ${session.status == 'CREATED' ? 'selected' : ''}>Criada</option>
                 <option value="IN_PROGRESS" ${session.status == 'IN_PROGRESS' ? 'selected' : ''}>Em Progresso</option>
                 <option value="FINISHED" ${session.status == 'FINISHED' ? 'selected' : ''}>Finalizada</option>
             </select>
         </div>
 
-        <p>Mantenha as datas vazias caso não queira alterá-las</p>
-
-        <div class="form-group">
-            <label for="startDate">Data de Início:</label>
-            <input id="startDate" name="startDate" type="datetime-local" required/>
-
-        </div>
-
-        <div class="form-group">
-            <label for="endDate">Data de Término:</label>
-            <input id="endDate" name="endDate" type="datetime-local" required/>
-        </div>
-
-        <button type="submit" class="btn">
-            <c:choose>
-                <c:when test="${session.id == null}">Criar</c:when>
-                <c:otherwise>Atualizar</c:otherwise>
-            </c:choose>
-        </button>
+        <c:if test="${session.status != 'FINISHED'}">
+            <button type="submit" class="btn">
+                <c:choose>
+                    <c:when test="${session.id == null}">Criar</c:when>
+                    <c:otherwise>Atualizar Dados</c:otherwise>
+                </c:choose>
+            </button>
+            <button onclick="sendFormWithNewStatus()" class="btn">
+                <c:choose>
+                    <c:when test="${session.status == 'CREATED'}">Iniciar Sessão</c:when>
+                    <c:otherwise>Encerrar Sessão</c:otherwise>
+                </c:choose>
+            </button>
+        </c:if>
     </form>
 </div>
 <script>
+
+    function sendFormWithNewStatus() {
+        event.preventDefault(); // impede o submit padrão
+
+        const statusSelect = document.getElementById("status");
+        const form = statusSelect.form;
+
+        let newStatus;
+        let message;
+
+        if (statusSelect.value === "CREATED") {
+            newStatus = "IN_PROGRESS";
+            message = "Você deseja iniciar esta sessão?";
+        } else if (statusSelect.value === "IN_PROGRESS") {
+            newStatus = "FINISHED";
+            message = "Você deseja encerrar esta sessão?";
+        } else {
+            return; // status finalizado não deve permitir alteração
+        }
+
+        if (confirm(message)) {
+            statusSelect.value = newStatus;
+            form.submit();
+        }
+    }
+
+
     function bindDatalistInput(visibleInputId, datalistId, hiddenInputId) {
         const visibleInput = document.getElementById(visibleInputId);
         const hiddenInput = document.getElementById(hiddenInputId);
@@ -190,7 +212,7 @@
             }
 
             if (!matched) {
-                alert(`Por favor, selecione uma opção válida para o campo "${input.previousElementSibling.innerText}".`);
+                alert(`você selecionou um projeto, testador ou estratégia inválido`);
                 hidden.value = "";
                 input.focus();
                 isValid = false;
