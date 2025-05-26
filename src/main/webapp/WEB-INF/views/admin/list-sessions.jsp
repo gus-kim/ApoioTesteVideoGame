@@ -2,10 +2,11 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gerenciar Sessões</title>
+    <title><fmt:message key="sessao.titulo"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/base.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/form.css" />
@@ -37,24 +38,24 @@
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <div class="container">
-    <h1>Gerenciar Sessões</h1>
-    <a href="${pageContext.request.contextPath}/sessions" class="btn btn-secondary">Voltar</a>
-    <a href="${pageContext.request.contextPath}/admin/sessions/novo" class="btn btn-primary">Nova Sessão</a>
+    <h1><fmt:message key="sessao.titulo"/></h1>
+    <a href="${pageContext.request.contextPath}/sessions" class="btn btn-secondary"><fmt:message key="botao.voltar"/></a>
+    <a href="${pageContext.request.contextPath}/admin/sessions/novo" class="btn btn-primary"><fmt:message key="sessao.novo"/></a>
 
     <table class="table">
         <thead>
         <tr>
             <th>ID</th>
-            <th>ID do Projeto</th>
-            <th>ID do Testador</th>
-            <th>ID da Estratégia</th>
-            <th>Duração (minutos)</th>
-            <th>Descrição</th>
-            <th>Data de Criação</th>
-            <th>Data de Início</th>
-            <th>Data de Término</th>
-            <th>Status</th>
-            <th>Ações</th>
+            <th><fmt:message key="sessao.projeto"/></th>
+            <th><fmt:message key="sessao.testador"/></th>
+            <th><fmt:message key="sessao.estrategia"/></th>
+            <th><fmt:message key="sessao.duracao"/></th>
+            <th><fmt:message key="sessao.descricao"/></th>
+            <th><fmt:message key="sessao.data.criacao"/></th>
+            <th><fmt:message key="sessao.data.inicio"/></th>
+            <th><fmt:message key="sessao.data.termino"/></th>
+            <th><fmt:message key="sessao.status"/></th>
+            <th><fmt:message key="acoes"/></th>
         </tr>
         </thead>
         <tbody>
@@ -81,14 +82,14 @@
                 </td>
                 <td>
                     <span class="status-badge ${session.status.name().toLowerCase()}">
-                            ${session.status}
+                            <fmt:message key="sessao.status.${session.status.name().toLowerCase()}"/>
                     </span>
                 </td>
                 <td>
                     <a href="${pageContext.request.contextPath}/admin/sessions/editar?id=${session.id}"
-                       class="btn btn-primary">Editar</a>
+                       class="btn btn-primary"><fmt:message key="botao.editar"/></a>
                     <a href="${pageContext.request.contextPath}/admin/sessions/remover?id=${session.id}"
-                            class="btn btn-danger" >Remover</a>
+                            class="btn btn-danger" ><fmt:message key="botao.remover"/></a>
                 </td>
             </tr>
         </c:forEach>

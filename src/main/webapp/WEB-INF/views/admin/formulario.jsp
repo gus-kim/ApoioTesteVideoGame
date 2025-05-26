@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -7,8 +8,8 @@
     <title>
         <%-- Define título dinâmico conforme criação ou edição --%>
         <c:choose>
-            <c:when test="${admin.id == null}">Novo Administrador</c:when>
-            <c:otherwise>Editar Administrador</c:otherwise>
+            <c:when test="${admin.id == null}"><fmt:message key="admin.novo"/></c:when>
+            <c:otherwise><fmt:message key="admin.editar"/></c:otherwise>
         </c:choose>
     </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/base.css">
@@ -22,8 +23,8 @@
     <h1>
         <%-- Título principal dinâmico --%>
         <c:choose>
-            <c:when test="${admin.id == null}">Novo Administrador</c:when>
-            <c:otherwise>Editar Administrador</c:otherwise>
+            <c:when test="${admin.id == null}"><fmt:message key="admin.novo"/></c:when>
+            <c:otherwise><fmt:message key="admin.editar"/></c:otherwise>
         </c:choose>
     </h1>
 
@@ -36,7 +37,7 @@
         </div>
     </c:if>
 
-    <a href="${pageContext.request.contextPath}/admin/administradores" class="btn btn-secondary">Voltar</a>
+    <a href="${pageContext.request.contextPath}/admin/administradores" class="btn btn-secondary"><fmt:message key="botao.voltar"/></a>
 
     <form id="adminForm"
           action="${pageContext.request.contextPath}/admin/administradores/${admin.id == null ? 'inserir' : 'atualizar'}"
@@ -48,30 +49,30 @@
         </c:if>
 
         <div class="form-group">
-            <label>Nome:</label>
+            <label><fmt:message key="admin.nome"/>:</label>
             <input id="nome" type="text" name="nome" value="${admin.nome}" required>
             <div id="nomeError" class="error-message"></div>
         </div>
 
         <div class="form-group">
-            <label>E-mail:</label>
+            <label><fmt:message key="admin.email"/>:</label>
             <input id="email" type="email" name="email" value="${admin.email}" required
                    placeholder="usuario@dominio.com">
             <div id="emailError" class="error-message"></div>
         </div>
 
         <div class="form-group">
-            <label>Senha:</label>
+            <label><fmt:message key="admin.senha"/>:</label>
             <input id="senha" type="password" name="senha" minlength="6" required
-                   placeholder="mínimo 6 caracteres">
+                   placeholder="<fmt:message key="login.senha.minimo"/>">
             <div id="senhaError" class="error-message"></div>
         </div>
 
         <button type="submit" class="btn btn-primary">
             <%-- Texto do botão conforme ação --%>
             <c:choose>
-                <c:when test="${admin.id == null}">Criar</c:when>
-                <c:otherwise>Atualizar</c:otherwise>
+                <c:when test="${admin.id == null}"><fmt:message key="botao.criar"/></c:when>
+                <c:otherwise><fmt:message key="botao.atualizar"/></c:otherwise>
             </c:choose>
         </button>
     </form>

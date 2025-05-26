@@ -1,12 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%-- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> --%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <%-- <title><fmt:message key="projeto.lista.titulo"/></title> --%>
-  <title>Lista de Projetos</title>
+  <title><fmt:message key="projeto.titulo"/></title>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/estilo.css">
   <script src="${pageContext.request.contextPath}/resources/js/projetos.js"></script>
 </head>
@@ -17,38 +16,29 @@
   <c:choose>
     <c:when test="${sessionScope.usuario == null}">
       <div class="error">
-          <%-- <fmt:message key="erro.acesso.nao.autenticado"/> --%>
-        Você precisa estar autenticado para acessar esta página.
+        <fmt:message key="erro.acesso.nao.autenticado"/>
       </div>
     </c:when>
 
     <c:otherwise>
-      <%-- <h2><fmt:message key="projeto.lista.titulo"/></h2> --%>
-      <h2>Lista de Projetos</h2>
+      <h2><fmt:message key="projeto.titulo"/></h2>
 
       <div class="filtros">
-          <%-- <label><fmt:message key="projeto.ordenar.por"/>:</label> --%>
-        <label>Ordenar por:</label>
+        <label><fmt:message key="projeto.ordenar.por"/>:</label>
         <select id="ordenacao" onchange="atualizarListagem()">
-            <%-- <option value="nome"><fmt:message key="projeto.ordenar.nome"/></option> --%>
-          <option value="nome">Nome</option>
-            <%-- <option value="data_criacao"><fmt:message key="projeto.ordenar.data"/></option> --%>
-          <option value="data_criacao">Data de Criação</option>
+          <option value="nome"><fmt:message key="projeto.ordenar.nome"/></option>
+          <option value="data_criacao"><fmt:message key="projeto.ordenar.data"/></option>
         </select>
       </div>
 
       <table id="tabela-projetos">
         <thead>
         <tr>
-            <%-- <th><fmt:message key="projeto.nome"/></th> --%>
-          <th>Nome</th>
-            <%-- <th><fmt:message key="projeto.descricao"/></th> --%>
-          <th>Descrição</th>
-            <%-- <th><fmt:message key="projeto.data.criacao"/></th> --%>
-          <th>Data de Criação</th>
+          <th><fmt:message key="projeto.nome"/></th>
+          <th><fmt:message key="projeto.descricao"/></th>
+          <th><fmt:message key="projeto.data.criacao"/></th>
           <c:if test="${sessionScope.usuario.admin}">
-            <%-- <th><fmt:message key="acoes"/></th> --%>
-            <th>Ações</th>
+            <th><fmt:message key="acoes"/></th>
           </c:if>
         </tr>
         </thead>
@@ -58,8 +48,7 @@
       </table>
 
       <div id="sem-projetos" class="info" style="display: none;">
-          <%-- <fmt:message key="projeto.nenhum.encontrado"/> --%>
-        Nenhum projeto encontrado.
+        <fmt:message key="projeto.nenhum.encontrado"/>
       </div>
     </c:otherwise>
   </c:choose>
@@ -93,8 +82,7 @@
                             ${sessionScope.usuario.admin ? `
                                 <td>
                                     <a href="editar-projeto?id=${projeto.id}" class="btn-edit">
-                                        <!-- <fmt:message key="botao.editar"/> -->
-                                        Editar
+                                        <fmt:message key="botao.editar"/>
                                     </a>
                                 </td>
                             ` : ''}

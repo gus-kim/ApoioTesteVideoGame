@@ -1,12 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%-- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> --%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <%-- Título original com i18n: <fmt:message key="projeto.criar.titulo"/> --%>
-  <title>Criar Projeto</title>
+  <title><fmt:message key="projeto.novo"/></title>
   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/estilo.css">
 </head>
 <body>
@@ -15,27 +14,23 @@
 <div class="container">
   <c:if test="${sessionScope.usuario == null || !sessionScope.usuario.admin}">
     <div class="error">
-        <%-- <fmt:message key="erro.acesso.negado"/> --%>
-      Acesso negado.
+      <fmt:message key="erro.acesso.negado"/>
     </div>
   </c:if>
 
   <c:if test="${sessionScope.usuario.admin}">
-    <%-- <h2><fmt:message key="projeto.criar.titulo"/></h2> --%>
-    <h2>Criar Projeto</h2>
+    <h2><fmt:message key="projeto.novo"/></h2>
 
     <c:if test="${not empty param.error}">
       <div class="error">
-          <%-- <fmt:message key="${param.error}"/> --%>
-        Erro: ${param.error}
+        <fmt:message key="${param.error}"/>
       </div>
     </c:if>
 
     <form action="${pageContext.request.contextPath}/admin/criar-projeto" method="post">
       <div class="form-group">
         <label for="nome">
-            <%-- <fmt:message key="projeto.nome"/> * --%>
-          Nome *
+          <fmt:message key="projeto.nome"/> *
         </label>
         <input type="text" id="nome" name="nome" required
                maxlength="200" value="${param.nome}">
@@ -43,16 +38,14 @@
 
       <div class="form-group">
         <label for="descricao">
-            <%-- <fmt:message key="projeto.descricao"/> --%>
-          Descrição
+          <fmt:message key="projeto.descricao"/>
         </label>
         <textarea id="descricao" name="descricao" rows="4">${param.descricao}</textarea>
       </div>
 
       <div class="form-group">
         <label for="membros">
-            <%-- <fmt:message key="projeto.membros"/> * --%>
-          Membros *
+          <fmt:message key="projeto.membros"/> *
         </label>
         <select id="membros" name="membros" multiple required
                 class="select-multiplo">
@@ -63,8 +56,7 @@
       </div>
 
       <button type="submit" class="btn-primary">
-          <%-- <fmt:message key="botao.salvar"/> --%>
-        Salvar
+        <fmt:message key="botao.salvar"/>
       </button>
     </form>
   </c:if>

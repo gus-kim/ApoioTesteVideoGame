@@ -2,13 +2,14 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>
         <c:choose>
-            <c:when test="${session.id == null}">Nova Sessão de Testes</c:when>
-            <c:otherwise>Editar Sessão de Testes</c:otherwise>
+            <c:when test="${session.id == null}"><fmt:message key="sessao.novo"/></c:when>
+            <c:otherwise><fmt:message key="sessao.editar"/></c:otherwise>
         </c:choose>
     </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/base.css" />
@@ -21,24 +22,24 @@
 
     <h1>
         <c:choose>
-            <c:when test="${session.id == null}">Nova Sessão de Testes</c:when>
-            <c:otherwise>Editar Sessão de Testes</c:otherwise>
+            <c:when test="${session.id == null}"><fmt:message key="sessao.novo"/></c:when>
+            <c:otherwise><fmt:message key="sessao.editar"/></c:otherwise>
         </c:choose>
     </h1>
 
     <c:if test="${not empty error}">
         <div class="alert alert-danger">
             <c:choose>
-                <c:when test="${error == 'missing_fields'}">Preencha todos os campos obrigatórios!</c:when>
-                <c:when test="${error == 'invalid_numbers'}">IDs e duração devem ser números válidos!</c:when>
-                <c:when test="${error == 'invalid_status'}">Status inválido selecionado!</c:when>
-                <c:when test="${error == 'invalid_dates'}">Datas de início e término são obrigatórias!</c:when>
-                <c:otherwise>Ocorreu um erro ao processar a solicitação.</c:otherwise>
+                <c:when test="${error == 'missing_fields'}"><fmt:message key="erro.campos.obrigatorios"/></c:when>
+                <c:when test="${error == 'invalid_numbers'}"><fmt:message key="erro.ids.invalidos"/></c:when>
+                <c:when test="${error == 'invalid_status'}"><fmt:message key="erro.status.invalido"/></c:when>
+                <c:when test="${error == 'invalid_dates'}"><fmt:message key="erro.datas.invalidas"/></c:when>
+                <c:otherwise><fmt:message key="erro.ocorreu.erro"/></c:otherwise>
             </c:choose>
         </div>
     </c:if>
 
-    <a href="${pageContext.request.contextPath}/admin/sessions" class="btn btn-secondary">Voltar</a>
+    <a href="${pageContext.request.contextPath}/admin/sessions" class="btn btn-secondary"><fmt:message key="botao.voltar"/></a>
 
     <form action="${pageContext.request.contextPath}/admin/sessions/${session.id == null ? "inserir" : "atualizar"}" method="post" novalidate>
 
@@ -48,7 +49,7 @@
         </div>
 
         <div class="form-group">
-            <label for="projectInput">Projeto:</label>
+            <label for="projectInput"><fmt:message key="sessao.projeto"/>:</label>
             <input id="projectInput" list="projectList" autocomplete="off" required />
             <input type="hidden" id="projectId" name="projectId" value="${session.projectId}" />
             <datalist id="projectList">
@@ -60,7 +61,7 @@
 
 
         <div class="form-group">
-            <label for="testerInput">Testador:</label>
+            <label for="testerInput"><fmt:message key="sessao.testador"/>:</label>
             <input id="testerInput" list="testerList" autocomplete="off" required />
             <input type="hidden" id="testerId" name="testerId" value="${session.testerId}" />
             <datalist id="testerList" >
@@ -72,7 +73,7 @@
 
 
         <div class="form-group">
-            <label for="strategyInput">Estratégia:</label>
+            <label for="strategyInput"><fmt:message key="sessao.estrategia"/>:</label>
             <input id="strategyInput" list="strategyList" autocomplete="off" required />
             <input type="hidden" id="strategyId" name="strategyId" value="${session.strategyId}" />
             <datalist id="strategyList">
@@ -85,42 +86,42 @@
 
 
         <div class="form-group">
-            <label for="minutesDuration">Duração (minutos):</label>
+            <label for="minutesDuration"><fmt:message key="sessao.duracao"/>:</label>
             <input id="minutesDuration" name="minutesDuration" type="number" min="1"
                    value="${empty session.minutesDuration ? '0' : session.minutesDuration}" required />
         </div>
 
         <div class="form-group">
-            <label for="description">Descrição:</label>
+            <label for="description"><fmt:message key="sessao.descricao"/>:</label>
             <textarea id="description" name="description">${empty session.description ? '' : session.description}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="status">Status:</label>
+            <label for="status"><fmt:message key="sessao.status"/>:</label>
             <select id="status" name="status" required>
-                <option value="CREATED" ${session.status == 'CREATED' ? 'selected' : ''}>Criada</option>
-                <option value="IN_PROGRESS" ${session.status == 'IN_PROGRESS' ? 'selected' : ''}>Em Progresso</option>
-                <option value="FINISHED" ${session.status == 'FINISHED' ? 'selected' : ''}>Finalizada</option>
+                <option value="CREATED" ${session.status == 'CREATED' ? 'selected' : ''}><fmt:message key="sessao.status.created"/></option>
+                <option value="IN_PROGRESS" ${session.status == 'IN_PROGRESS' ? 'selected' : ''}><fmt:message key="sessao.status.in_progress"/></option>
+                <option value="FINISHED" ${session.status == 'FINISHED' ? 'selected' : ''}><fmt:message key="sessao.status.finished"/></option>
             </select>
         </div>
 
-        <p>Mantenha as datas vazias caso não queira alterá-las</p>
+        <p><fmt:message key="sessao.mantenha.datas"/></p>
 
         <div class="form-group">
-            <label for="startDate">Data de Início:</label>
+            <label for="startDate"><fmt:message key="sessao.data.inicio"/>:</label>
             <input id="startDate" name="startDate" type="datetime-local" required/>
 
         </div>
 
         <div class="form-group">
-            <label for="endDate">Data de Término:</label>
+            <label for="endDate"><fmt:message key="sessao.data.termino"/>:</label>
             <input id="endDate" name="endDate" type="datetime-local" required/>
         </div>
 
         <button type="submit" class="btn">
             <c:choose>
-                <c:when test="${session.id == null}">Criar</c:when>
-                <c:otherwise>Atualizar</c:otherwise>
+                <c:when test="${session.id == null}"><fmt:message key="botao.criar"/></c:when>
+                <c:otherwise><fmt:message key="botao.atualizar"/></c:otherwise>
             </c:choose>
         </button>
     </form>

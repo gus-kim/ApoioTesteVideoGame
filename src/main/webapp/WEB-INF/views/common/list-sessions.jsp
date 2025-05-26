@@ -2,10 +2,11 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sessões de Teste</title>
+    <title><fmt:message key="sessao.titulo"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/base.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/form.css" />
@@ -37,23 +38,23 @@
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <div class="container">
-    <h1>Gerenciar Sessões</h1>
-    <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-secondary">Voltar</a>
-    <a href="${pageContext.request.contextPath}/admin/sessions/" class="btn btn-primary">Gerenciar Sessões</a>
+    <h1><fmt:message key="sessao.titulo"/></h1>
+    <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-secondary"><fmt:message key="botao.voltar"/></a>
+    <a href="${pageContext.request.contextPath}/admin/sessions/" class="btn btn-primary"><fmt:message key="sessao.gerenciar"/></a>
 
     <table class="table">
         <thead>
         <tr>
             <th>ID</th>
-            <th>ID do Projeto</th>
-            <th>ID do Testador</th>
-            <th>ID da Estratégia</th>
-            <th>Duração (minutos)</th>
-            <th>Descrição</th>
-            <th>Data de Criação</th>
-            <th>Data de Início</th>
-            <th>Data de Término</th>
-            <th>Status</th>
+            <th><fmt:message key="sessao.projeto"/></th>
+            <th><fmt:message key="sessao.testador"/></th>
+            <th><fmt:message key="sessao.estrategia"/></th>
+            <th><fmt:message key="sessao.duracao"/></th>
+            <th><fmt:message key="sessao.descricao"/></th>
+            <th><fmt:message key="sessao.data.criacao"/></th>
+            <th><fmt:message key="sessao.data.inicio"/></th>
+            <th><fmt:message key="sessao.data.termino"/></th>
+            <th><fmt:message key="sessao.status"/></th>
         </tr>
         </thead>
         <tbody>
