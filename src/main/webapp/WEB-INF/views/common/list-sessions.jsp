@@ -51,9 +51,8 @@
             <th>Duração (minutos)</th>
             <th>Descrição</th>
             <th>Data de Criação</th>
-            <th>Data de Início</th>
-            <th>Data de Término</th>
             <th>Status</th>
+            <th>Ações</th>
         </tr>
         </thead>
         <tbody>
@@ -69,19 +68,13 @@
                     <tags:localDate date="${session.creationDate}" pattern="dd/MM/yyyy HH:mm"/>
                 </td>
                 <td>
-                    <c:if test="${session.endDate != null}">
-                        <tags:localDate date="${session.startDate}" pattern="dd/MM/yyyy HH:mm"/>
-                    </c:if>
-                </td>
-                <td>
-                    <c:if test="${session.endDate != null}">
-                        <tags:localDate date="${session.endDate}" pattern="dd/MM/yyyy HH:mm"/>
-                    </c:if>
-                </td>
-                <td>
                     <span class="status-badge ${session.status.name().toLowerCase()}">
                             ${session.status}
                     </span>
+                </td>
+                <td>
+                    <a href="${pageContext.request.contextPath}/bugs?sessao_id=${session.id}"
+                       class="btn btn-primary">Bugs</a>
                 </td>
             </tr>
         </c:forEach>

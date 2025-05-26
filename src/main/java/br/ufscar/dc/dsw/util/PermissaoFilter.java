@@ -25,6 +25,7 @@ public class PermissaoFilter implements Filter {
         restricoes.put("/testador/sessoes", new String[]{"ADMIN","TESTADOR"});
         restricoes.put("/testador/criarSessao", new String[]{"ADMIN","TESTADOR"});
         restricoes.put("/admin/sessions", new String[]{"ADMIN", "TESTADOR"});
+        restricoes.put("/bugs/add", new String[]{"ADMIN", "TESTADOR"});
         // A lista pública de estratégias é livre (não restrita)
     }
 

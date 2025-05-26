@@ -51,8 +51,6 @@
             <th>Duração (minutos)</th>
             <th>Descrição</th>
             <th>Data de Criação</th>
-            <th>Data de Início</th>
-            <th>Data de Término</th>
             <th>Status</th>
             <th>Ações</th>
         </tr>
@@ -70,26 +68,31 @@
                     <tags:localDate date="${session.creationDate}" pattern="dd/MM/yyyy HH:mm"/>
                 </td>
                 <td>
-                    <c:if test="${session.endDate != null}">
-                        <tags:localDate date="${session.startDate}" pattern="dd/MM/yyyy HH:mm"/>
-                    </c:if>
-                </td>
-                <td>
-                    <c:if test="${session.endDate != null}">
-                        <tags:localDate date="${session.endDate}" pattern="dd/MM/yyyy HH:mm"/>
-                    </c:if>
-                </td>
-                <td>
                     <span class="status-badge ${session.status.name().toLowerCase()}">
                             ${session.status}
                     </span>
                 </td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/admin/sessions/editar?id=${session.id}"
-                       class="btn btn-primary">Editar</a>
+                    <c:choose>
+                        <c:when test="${session.status == 'FINISHED'}">
+                            <button class="btn btn-secondary" onclick="alert('Esta sessão já foi finalizada e não pode ser editada.')">
+                                Editar
+                            </button>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/admin/sessions/editar?id=${session.id}"
+                               class="btn btn-primary">Editar</a>
+                        </c:otherwise>
+                    </c:choose>
+
                     <a href="${pageContext.request.contextPath}/admin/sessions/remover?id=${session.id}"
-                            class="btn btn-danger" >Remover</a>
+                       class="btn btn-danger">Remover</a>
+
+                    <a href="${pageContext.request.contextPath}/bugs?sessao_id=${session.id}"
+                       class="btn btn-primary">Bugs</a>
                 </td>
+
+
             </tr>
         </c:forEach>
         </tbody>
